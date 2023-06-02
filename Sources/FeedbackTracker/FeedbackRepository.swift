@@ -11,7 +11,6 @@ class FeedbackRepository: ObservableObject{
     @Published var email: String = "Email"
     @Published var message: String = "Message"
     
-    
     let appName: String = Bundle.main.displayName ?? ""
     let urlPath: String = "http://89.108.99.148:8080"
     
