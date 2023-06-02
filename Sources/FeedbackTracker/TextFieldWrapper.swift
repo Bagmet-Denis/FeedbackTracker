@@ -9,7 +9,7 @@ struct TextFieldWrapper<PresentingView: View>: View {
     var body: some View {
         ZStack {
             if isPresented {
-                TextFieldAlert(title: "Test", textFields: [
+                TextFieldAlert(title: "Feedback", textFields: [
                     .init(text: $feedbackRepository.email, placeholder: "email"),
                     .init(text: $feedbackRepository.message, placeholder: "message"),
                 ], actions: [
