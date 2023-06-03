@@ -2,7 +2,6 @@ import SwiftUI
 
 struct TextFieldWrapper<PresentingView: View>: View {
     @StateObject var feedbackRepository = FeedbackRepository()
-    let title: String
     @Binding var isPresented: Bool
     let presentingView: PresentingView
     let content: () -> TextFieldAlert
@@ -10,12 +9,12 @@ struct TextFieldWrapper<PresentingView: View>: View {
     var body: some View {
         ZStack {
             if isPresented {
-                TextFieldAlert(title: title, textFields: [
+                TextFieldAlert(title: getTitleByLanguage(), textFields: [
                     .init(text: $feedbackRepository.email, placeholder: "email"),
                     .init(text: $feedbackRepository.message, placeholder: "message"),
                 ], actions: [
-                    .init(title: "Cancel"),
-                    .init(title: "Submit", closure: { _ in
+                    .init(title: getCancelByLanguage()),
+                    .init(title: getSubmitByLanguage(), closure: { _ in
                         Task{
                             await feedbackRepository.sendFeedback()
                         }
@@ -26,5 +25,17 @@ struct TextFieldWrapper<PresentingView: View>: View {
             
             presentingView
         }
+    }
+    
+    func getTitleByLanguage() -> String{
+        return "Title"
+    }
+    
+    func getCancelByLanguage() -> String{
+        return "Cancel"
+    }
+    
+    func getSubmitByLanguage() -> String{
+        return "Submit"
     }
 }

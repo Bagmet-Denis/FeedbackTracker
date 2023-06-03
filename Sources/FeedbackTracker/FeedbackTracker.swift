@@ -4,9 +4,9 @@
 import SwiftUI
 
 public extension View{
-    func feedbackAlert(title: String, isPresented: Binding<Bool>) -> some View{
-        TextFieldWrapper(title: title, isPresented: isPresented, presentingView: self) {
-            TextFieldAlert(title: title)
+    func feedbackAlert(isPresented: Binding<Bool>) -> some View{
+        TextFieldWrapper(isPresented: isPresented, presentingView: self) {
+            TextFieldAlert(title: "test")
         }
     }
 }

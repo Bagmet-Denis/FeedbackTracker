@@ -18,7 +18,7 @@ public extension View {
         isPresented: Binding<Bool>
     ) -> some View {
         TextFieldWrapper(
-            title: title, isPresented: isPresented,
+            isPresented: isPresented,
             presentingView: self,
             content: {
                 TextFieldAlert(

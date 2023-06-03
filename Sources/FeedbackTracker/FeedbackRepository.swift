@@ -12,7 +12,8 @@ class FeedbackRepository: ObservableObject{
     @Published var message: String = ""
     
     let appName: String = Bundle.main.displayName ?? ""
-    let urlPath: String = "https://appboxservice.com"
+//    let urlPath: String = "https://appboxservice.com"
+    let urlPath: String = "http://127.0.0.1:8080"
     
     func sendFeedback() async{
         guard let url = URL(string: self.urlPath + "/feedback") else {return}
