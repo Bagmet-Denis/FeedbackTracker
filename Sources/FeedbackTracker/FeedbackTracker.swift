@@ -10,3 +10,15 @@ public extension View{
         }
     }
 }
+
+public func showActionSheet(completion: @escaping () -> Void) -> ActionSheet {
+    let actionSheet = ActionSheet(
+        title: Text("Custom ActionSheet"),
+        message: Text("This is a custom action sheet."),
+        buttons: [
+            .default(Text("OK"), action: completion),
+            .cancel()
+        ]
+    )
+    return actionSheet
+}
