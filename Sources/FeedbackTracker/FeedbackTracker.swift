@@ -47,3 +47,41 @@ public extension View {
         viewController.present(mailComposer, animated: true)
     }
 }
+
+extension View {
+    func customAlertView(isAlertVisible: Binding<Bool>) -> some View {
+        CustomAlertView(isAlertVisible: isAlertVisible)
+    }
+}
+
+struct CustomAlertView: View {
+    @Binding var isAlertVisible: Bool
+    
+    var body: some View {
+        VStack {
+            Text("Custom Alert View")
+                .font(.title)
+                .padding()
+                .background(Color.yellow)
+                .foregroundColor(.black)
+                .cornerRadius(10)
+                .padding()
+                .overlay(
+                    RoundedRectangle(cornerRadius: 10)
+                        .stroke(Color.black, lineWidth: 2)
+                )
+            
+            Button("Toggle State") {
+                isAlertVisible.toggle()
+            }
+            .padding()
+            .background(Color.blue)
+            .foregroundColor(.white)
+            .cornerRadius(10)
+            .padding()
+            .alert(isPresented: $isAlertVisible) {
+                Alert(title: Text("State Toggled"), message: nil, dismissButton: .default(Text("OK")))
+            }
+        }
+    }
+}
