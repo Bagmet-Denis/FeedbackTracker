@@ -11,14 +11,14 @@ public extension View {
     ///   - actions: An array of models used as actions of the alert.
     ///   - isPresented: A binding to a Boolean value that determines whether to present the alert. When the user presses or taps one of the alert's actions, the system sets this value to `false` and dismisses.
     func textFieldAlert(
-        title: String?,
+        title: String,
         message: String? = nil,
         textFields: [TextFieldAlert.TextField],
         actions: [TextFieldAlert.Action],
         isPresented: Binding<Bool>
     ) -> some View {
         TextFieldWrapper(
-            isPresented: isPresented,
+            title: title, isPresented: isPresented,
             presentingView: self,
             content: {
                 TextFieldAlert(
