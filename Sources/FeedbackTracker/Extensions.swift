@@ -15,10 +15,12 @@ public extension View {
         message: String? = nil,
         textFields: [TextFieldAlert.TextField],
         actions: [TextFieldAlert.Action],
-        isPresented: Binding<Bool>
+        isPresented: Binding<Bool>,
+        language: Language
     ) -> some View {
         TextFieldWrapper(
             isPresented: isPresented,
+            language: language,
             presentingView: self,
             content: {
                 TextFieldAlert(

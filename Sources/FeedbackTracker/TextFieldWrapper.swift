@@ -3,13 +3,15 @@ import SwiftUI
 struct TextFieldWrapper<PresentingView: View>: View {
     @StateObject var feedbackRepository = FeedbackRepository()
     @Binding var isPresented: Bool
+    
+    let language: Language
     let presentingView: PresentingView
     let content: () -> TextFieldAlert
     
     var body: some View {
         ZStack {
             if isPresented {
-                TextFieldAlert(title: getTitleByLanguage(), textFields: [
+                TextFieldAlert(title: Localization.text(.quickFeedback, language: language), textFields: [
                     .init(text: $feedbackRepository.email, placeholder: "email"),
                     .init(text: $feedbackRepository.message, placeholder: "message"),
                 ], actions: [
