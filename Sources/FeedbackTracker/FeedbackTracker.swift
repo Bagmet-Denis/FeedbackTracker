@@ -18,9 +18,7 @@ public extension View {
         self.actionSheet(isPresented: isPresented) {
             ActionSheet(title: Text("Feedback"), buttons: [
                 .default(Text("Quick Feedback"), action: {
-                    TextFieldWrapper(isPresented: isPresented, presentingView: self) {
-                        TextFieldAlert(title: "test")
-                    }
+                    textFieldAlert(title: "", textFields: [], actions: [], isPresented: isPresented)
                 }),
                 .default(Text("Send to Email"), action: {
                     sendEmail()
