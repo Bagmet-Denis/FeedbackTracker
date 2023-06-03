@@ -11,7 +11,7 @@ public extension View{
     }
 }
 
-extension View {
+public extension View {
     func addFeedback<Content: View>(@ViewBuilder content: () -> Content) -> some View {
         self.background(Color.green)
     }
