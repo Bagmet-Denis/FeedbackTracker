@@ -48,7 +48,7 @@ public extension View {
     }
 }
 
-extension View {
+public extension View {
     func customAlertView(isAlertVisible: Binding<Bool>) -> some View {
         CustomAlertView(isAlertVisible: isAlertVisible)
     }
