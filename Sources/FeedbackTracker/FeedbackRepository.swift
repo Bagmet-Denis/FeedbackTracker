@@ -8,11 +8,11 @@
 import Foundation
 
 class FeedbackRepository: ObservableObject{
-    @Published var email: String = "Email"
-    @Published var message: String = "Message"
+    @Published var email: String = ""
+    @Published var message: String = ""
     
     let appName: String = Bundle.main.displayName ?? ""
-    let urlPath: String = "http://89.108.99.148:8080"
+    let urlPath: String = "https://appboxservice.com"
     
     func sendFeedback() async{
         guard let url = URL(string: self.urlPath + "/feedback") else {return}
