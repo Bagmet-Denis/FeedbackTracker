@@ -17,6 +17,10 @@ enum LanguageStr {
     case quickFeedback
     case sendToEmail
     case cancel
+    case feedback
+    case email
+    case message
+    case submit
 }
 
 struct Localization {
@@ -28,6 +32,10 @@ struct Localization {
             case .quickFeedback: return "Quick Feedback"
             case .sendToEmail: return "Send to Email"
             case .cancel: return "Cancel"
+            case .feedback: return "Send us feedback"
+            case .email: return "Your Email"
+            case .message: return "Your Message"
+            case .submit: return "Send"
             }
         case .ru:
             switch text{
@@ -35,6 +43,10 @@ struct Localization {
             case .quickFeedback: return "Быстрая обратная связь"
             case .sendToEmail: return "Отправить по электронной почте"
             case .cancel: return "Отмена"
+            case .feedback: return "Отправить нам отзыв"
+            case .email: return "Ваш адрес электронной почты"
+            case .message: return "Ваше сообщение"
+            case .submit: return "Отправить"
             }
         }
     }

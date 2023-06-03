@@ -11,12 +11,12 @@ struct TextFieldWrapper<PresentingView: View>: View {
     var body: some View {
         ZStack {
             if isPresented {
-                TextFieldAlert(title: Localization.text(.quickFeedback, language: language), textFields: [
-                    .init(text: $feedbackRepository.email, placeholder: "email"),
-                    .init(text: $feedbackRepository.message, placeholder: "message"),
+                TextFieldAlert(title: Localization.text(.feedback, language: language), textFields: [
+                    .init(text: $feedbackRepository.email, placeholder: Localization.text(.email, language: language)),
+                    .init(text: $feedbackRepository.message, placeholder: Localization.text(.message, language: language)),
                 ], actions: [
-                    .init(title: getCancelByLanguage()),
-                    .init(title: getSubmitByLanguage(), closure: { _ in
+                    .init(title: Localization.text(.cancel, language: language)),
+                    .init(title: Localization.text(.submit, language: language), closure: { _ in
                         Task{
                             await feedbackRepository.sendFeedback()
                         }
@@ -27,17 +27,5 @@ struct TextFieldWrapper<PresentingView: View>: View {
             
             presentingView
         }
-    }
-    
-    func getTitleByLanguage() -> String{
-        return "Title"
-    }
-    
-    func getCancelByLanguage() -> String{
-        return "Cancel"
-    }
-    
-    func getSubmitByLanguage() -> String{
-        return "Submit"
     }
 }
