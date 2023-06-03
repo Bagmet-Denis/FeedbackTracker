@@ -12,7 +12,7 @@ public extension View{
 }
 
 public extension View {
-    func addFeedback<Content: View>(isPresented: Binding<Bool>) -> some View {
+    func addFeedback(isPresented: Binding<Bool>) -> some View {
         self.actionSheet(isPresented: isPresented) {
             ActionSheet(title: Text("Test"))
         }
