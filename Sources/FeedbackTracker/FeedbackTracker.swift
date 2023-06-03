@@ -93,3 +93,31 @@ struct CustomAlertView: View {
         viewController.present(mailComposer, animated: true)
     }
 }
+
+
+public extension View {
+    func content<Content: View>(@ViewBuilder content: () -> Content, showSheet: Binding<Bool>) -> some View {
+        self.modifier(ContentModifier(showSheet: showSheet))
+    }
+}
+
+struct ContentModifier: ViewModifier {
+    @Binding var showSheet: Bool
+    @State var showAlert: Bool = false
+    
+    func body(content: Content) -> some View {
+        content
+            .feedbackAlert(isPresented: $showAlert)
+            .actionSheet(isPresented: $showSheet) {
+                ActionSheet(title: Text("Feedback"), buttons: [
+                    .default(Text("Quick Feedback"), action: {
+                        showAlert = true
+                    }),
+                    .default(Text("Send to Email"), action: {
+//                        sendEmail()
+                    }),
+                    .cancel()
+                ])
+            }
+    }
+}
