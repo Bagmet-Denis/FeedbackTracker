@@ -33,28 +33,18 @@ struct FeedbackModifier: ViewModifier {
                         showAlert = true
                     }),
                     .default(Text(Localization.text(.sendToEmail, language: language)), action: {
-                        sendEmail()
+                        openMail()
                     }),
                     .cancel(Text(Localization.text(.cancel, language: language)))
                 ])
             }
     }
     
-    func sendEmail() {
-        let recipient = "info@appbox.pw"
-        let mailComposer = MFMailComposeViewController()
-        mailComposer.setToRecipients([recipient])
-        mailComposer.setSubject("Feedback")
-        mailComposer.setMessageBody("", isHTML: false)
-        
-        guard MFMailComposeViewController.canSendMail() else {
-            return
+    func openMail() {
+        if let url = URL(string: "mailto:info@appbox.pw"),
+           UIApplication.shared.canOpenURL(url)
+        {
+            UIApplication.shared.open(url, options: [:], completionHandler: nil)
         }
-        
-        guard let viewController = UIApplication.shared.windows.first?.rootViewController else {
-            return
-        }
-        
-        viewController.present(mailComposer, animated: true)
     }
 }
