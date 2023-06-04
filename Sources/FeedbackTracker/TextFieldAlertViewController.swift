@@ -116,13 +116,13 @@ public final class TextFieldAlertViewController: UIViewController {
         // Create a UITextField
         let textField = UITextField()
         textField.translatesAutoresizingMaskIntoConstraints = false
-        textField.borderStyle = .roundedRect
+        textField.borderStyle = .none
         customViewController.view.addSubview(textField)
 
         // Create a UITextView
         let textView = UITextView()
         textView.translatesAutoresizingMaskIntoConstraints = false
-        textView.backgroundColor = .clear
+        textView.backgroundColor = .white
         textView.layer.borderWidth = 1.0
         textView.layer.borderColor = UIColor.gray.cgColor
         textView.layer.cornerRadius = 6.0
@@ -185,26 +185,26 @@ public final class TextFieldAlertViewController: UIViewController {
 //            textView.bottomAnchor.constraint(equalTo: customViewController.view.bottomAnchor, constant: -8)
 //        ])
         
-//        alert.actions.forEach { action in
-//            let alertAction = UIAlertAction(
-//                title: action.title,
-//                style: action.style,
-//                handler: { [weak self, weak alertController] _ in
-//                    self?.alert.isPresented?.wrappedValue = false
-//                    let textFieldText = textField.text ?? ""
-//                    let textViewText = textView.text ?? ""
-//                    action.closure?([textFieldText, textViewText])
-//                }
-//            )
-//            alertAction.isEnabled = action.isEnabled.wrappedValue
-//            alertController.addAction(alertAction)
-//        }
+        alert.actions.forEach { action in
+            let alertAction = UIAlertAction(
+                title: action.title,
+                style: action.style,
+                handler: { [weak self, weak alertController] _ in
+                    self?.alert.isPresented?.wrappedValue = false
+                    let textFieldText = textField.text ?? ""
+                    let textViewText = textView.text ?? ""
+                    action.closure?([textFieldText, textViewText])
+                }
+            )
+            alertAction.isEnabled = action.isEnabled.wrappedValue
+            alertController.addAction(alertAction)
+        }
         
         present(alertController, animated: true)
         
         // Сделать автофокус на UITextField после отображения
-//        DispatchQueue.main.async {
-//            textField.becomeFirstResponder()
-//        }
+        DispatchQueue.main.async {
+            textField.becomeFirstResponder()
+        }
     }
 }
