@@ -126,21 +126,30 @@ public final class TextFieldAlertViewController: UIViewController {
         let textView = UITextView()
         textView.translatesAutoresizingMaskIntoConstraints = false
         textView.text = ""
-//        textView.textColor = .lightGray
         textView.font = UIFont.systemFont(ofSize: 14)
         textView.selectedTextRange = textView.textRange(from: textView.beginningOfDocument, to: textView.beginningOfDocument)
         customViewController.view.addSubview(textView)
         
+        // Создаем и настраиваем UIView для отступа
+                let spacerView = UIView()
+                spacerView.translatesAutoresizingMaskIntoConstraints = false
+                customViewController.view.addSubview(spacerView)
+        
         NSLayoutConstraint.activate([
-            textField.topAnchor.constraint(equalTo: customViewController.view.topAnchor, constant: 5),
+            textField.topAnchor.constraint(equalTo: customViewController.view.topAnchor, constant: 0),
             textField.leadingAnchor.constraint(equalTo: customViewController.view.leadingAnchor, constant: 0),
-            textField.trailingAnchor.constraint(equalTo: customViewController.view.trailingAnchor, constant: 5),
+            textField.trailingAnchor.constraint(equalTo: customViewController.view.trailingAnchor, constant: 0),
             textField.heightAnchor.constraint(equalToConstant: 30),
             
-            textView.topAnchor.constraint(equalTo: textField.topAnchor, constant: 5),
+            spacerView.topAnchor.constraint(equalTo: textField.bottomAnchor, constant: 8),
+                        spacerView.leadingAnchor.constraint(equalTo: customViewController.view.leadingAnchor),
+                        spacerView.trailingAnchor.constraint(equalTo: customViewController.view.trailingAnchor),
+                        spacerView.heightAnchor.constraint(equalToConstant: 8), // Отступ между полями
+            
+            textView.topAnchor.constraint(equalTo: textField.bottomAnchor, constant: 0),
             textView.leadingAnchor.constraint(equalTo: customViewController.view.leadingAnchor, constant: 0),
             textView.trailingAnchor.constraint(equalTo: customViewController.view.trailingAnchor, constant: 0),
-            textView.bottomAnchor.constraint(equalTo: customViewController.view.bottomAnchor, constant: 5)
+            textView.bottomAnchor.constraint(equalTo: customViewController.view.bottomAnchor, constant: 0)
         ])
         
         // Добавляем пользовательский контроллер представления в UIAlertController
