@@ -138,8 +138,8 @@ public final class TextFieldAlertViewController: UIViewController {
         
         NSLayoutConstraint.activate([
             textField.topAnchor.constraint(equalTo: customViewController.view.topAnchor, constant: 8),
-            textField.leadingAnchor.constraint(equalTo: customViewController.view.leadingAnchor, constant: 8),
-            textField.trailingAnchor.constraint(equalTo: customViewController.view.trailingAnchor, constant: -8),
+            textField.leadingAnchor.constraint(equalTo: customViewController.view.leadingAnchor, constant: 0), // Расстояние до границы по горизонтали 0
+            textField.trailingAnchor.constraint(equalTo: customViewController.view.trailingAnchor, constant: 0), // Расстояние до границы по горизонтали 0
             textField.bottomAnchor.constraint(equalTo: customViewController.view.bottomAnchor, constant: -8),
             
 //            textField.topAnchor.constraint(equalTo: customViewController.view.topAnchor, constant: 0),
