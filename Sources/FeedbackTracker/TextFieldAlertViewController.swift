@@ -110,6 +110,26 @@ public final class TextFieldAlertViewController: UIViewController {
             preferredStyle: .alert
         )
         
+        // Создаем пользовательский контроллер представления
+        let customViewController = UIViewController()
+        customViewController.view.backgroundColor = .clear
+        
+        // Создаем и настраиваем UITextView
+        let customTextView = UITextView()
+        customTextView.translatesAutoresizingMaskIntoConstraints = false
+        customTextView.backgroundColor = UIColor.red
+        customViewController.view.addSubview(customTextView)
+        
+        NSLayoutConstraint.activate([
+            customTextView.topAnchor.constraint(equalTo: customViewController.view.topAnchor, constant: 8),
+            customTextView.leadingAnchor.constraint(equalTo: customViewController.view.leadingAnchor, constant: 8),
+            customTextView.trailingAnchor.constraint(equalTo: customViewController.view.trailingAnchor, constant: -8),
+            customTextView.bottomAnchor.constraint(equalTo: customViewController.view.bottomAnchor, constant: -8)
+        ])
+        
+        // Добавляем пользовательский контроллер представления в UIAlertController
+        alertController.setValue(customViewController, forKey: "contentViewController")
+        
         alert.actions.forEach { action in
             let alertAction = UIAlertAction(
                 title: action.title,
@@ -122,20 +142,7 @@ public final class TextFieldAlertViewController: UIViewController {
             alertAction.isEnabled = action.isEnabled.wrappedValue
             alertController.addAction(alertAction)
         }
-
-        let customView = UITextView(frame: CGRect(x: 0, y: 0, width: 100, height: 100))
-        customView.translatesAutoresizingMaskIntoConstraints = false
-
-        alertController.view.addSubview(customView) // Сначала добавляем customView как подпредставление
-
-        customView.topAnchor.constraint(equalTo: alertController.view.topAnchor, constant: 50).isActive = true
-        customView.rightAnchor.constraint(equalTo: alertController.view.rightAnchor, constant: -10).isActive = true
-        customView.leftAnchor.constraint(equalTo: alertController.view.leftAnchor, constant: 10).isActive = true
-        customView.bottomAnchor.constraint(equalTo: alertController.view.bottomAnchor, constant: -60).isActive = true
-        customView.backgroundColor = UIColor.red
-
-//        alertController.view.autoresizesSubviews = true
-
+        
         present(alertController, animated: true)
     }
 }
