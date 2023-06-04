@@ -3,7 +3,7 @@ import SwiftUI
 struct TextFieldWrapper<PresentingView: View>: View {
     @StateObject var feedbackRepository = FeedbackRepository()
     @Binding var isPresented: Bool
-    
+    let urlServer: String
     let language: Language
     let presentingView: PresentingView
     let content: () -> TextFieldAlert
@@ -18,7 +18,7 @@ struct TextFieldWrapper<PresentingView: View>: View {
                     .init(title: Localization.text(.cancel, language: language)),
                     .init(title: Localization.text(.submit, language: language), closure: { _ in
                         Task{
-                            await feedbackRepository.sendFeedback()
+                            await feedbackRepository.sendFeedback(urlPath: urlServer)
                         }
                     })
                 ])

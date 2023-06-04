@@ -12,10 +12,9 @@ class FeedbackRepository: ObservableObject{
     @Published var message: String = ""
     
     let appName: String = Bundle.main.displayName ?? ""
-    let urlPath: String = "https://appboxservice.com"
     
-    func sendFeedback() async{
-        guard let url = URL(string: self.urlPath + "/feedback") else {return}
+    func sendFeedback(urlPath: String) async{
+        guard let url = URL(string: urlPath + "/feedback") else {return}
 
         let data = FeedbackModel(email: self.email, message: self.message, appName: self.appName)
         var request = URLRequest(url: url)

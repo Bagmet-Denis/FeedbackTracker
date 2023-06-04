@@ -16,10 +16,12 @@ public extension View {
         textFields: [TextFieldAlert.TextField],
         actions: [TextFieldAlert.Action],
         isPresented: Binding<Bool>,
-        language: Language
+        language: Language,
+        urlServer: String
     ) -> some View {
         TextFieldWrapper(
             isPresented: isPresented,
+            urlServer: urlServer,
             language: language,
             presentingView: self,
             content: {
