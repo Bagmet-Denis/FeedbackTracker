@@ -118,14 +118,16 @@ public final class TextFieldAlertViewController: UIViewController {
         let textField = UITextField()
         textField.translatesAutoresizingMaskIntoConstraints = false
         textField.backgroundColor = .white
-        textField.placeholder = ""
+        textField.placeholder = "Email"
+        textField.font = UIFont.systemFont(ofSize: 14)
         customViewController.view.addSubview(textField)
         
         // Создаем и настраиваем UITextView
         let textView = UITextView()
         textView.translatesAutoresizingMaskIntoConstraints = false
         textView.text = ""
-        textView.textColor = .lightGray
+//        textView.textColor = .lightGray
+        textView.font = UIFont.systemFont(ofSize: 14)
         textView.selectedTextRange = textView.textRange(from: textView.beginningOfDocument, to: textView.beginningOfDocument)
         customViewController.view.addSubview(textView)
         
