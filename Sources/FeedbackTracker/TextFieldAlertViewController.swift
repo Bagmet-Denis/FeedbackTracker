@@ -82,27 +82,27 @@ import SwiftUI
 import Combine
 
 public final class TextFieldAlertViewController: UIViewController {
-
+    
     private let alert: TextFieldAlert
     private var cancellables = Set<AnyCancellable>()
-
+    
     init(
         alert: TextFieldAlert
     ) {
         self.alert = alert
         super.init(nibName: nil, bundle: nil)
     }
-
+    
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-
+    
     override public func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-
+        
         presentAlertController()
     }
-
+    
     private func presentAlertController() {
         let alertController = UIAlertController(
             title: alert.title,
@@ -131,26 +131,26 @@ public final class TextFieldAlertViewController: UIViewController {
         customViewController.view.addSubview(textView)
         
         // Создаем и настраиваем UIView для отступа
-                let spacerView = UIView()
-                spacerView.translatesAutoresizingMaskIntoConstraints = false
+        let spacerView = UIView()
+        spacerView.translatesAutoresizingMaskIntoConstraints = false
         spacerView.backgroundColor = UIColor.systemGray6
-                customViewController.view.addSubview(spacerView)
+        customViewController.view.addSubview(spacerView)
         
         NSLayoutConstraint.activate([
-            textField.topAnchor.constraint(equalTo: customViewController.view.topAnchor, constant: 0),
-            textField.leadingAnchor.constraint(equalTo: customViewController.view.leadingAnchor, constant: 0),
-            textField.trailingAnchor.constraint(equalTo: customViewController.view.trailingAnchor, constant: 0),
+            textField.topAnchor.constraint(equalTo: customViewController.view.topAnchor, constant: 8),
+            textField.leadingAnchor.constraint(equalTo: customViewController.view.leadingAnchor, constant: 8),
+            textField.trailingAnchor.constraint(equalTo: customViewController.view.trailingAnchor, constant: -8),
             textField.heightAnchor.constraint(equalToConstant: 30),
             
             spacerView.topAnchor.constraint(equalTo: textField.bottomAnchor, constant: 8),
-                        spacerView.leadingAnchor.constraint(equalTo: customViewController.view.leadingAnchor),
-                        spacerView.trailingAnchor.constraint(equalTo: customViewController.view.trailingAnchor),
-                        spacerView.heightAnchor.constraint(equalToConstant: 8), // Отступ между полями
+            spacerView.leadingAnchor.constraint(equalTo: customViewController.view.leadingAnchor),
+            spacerView.trailingAnchor.constraint(equalTo: customViewController.view.trailingAnchor),
+            spacerView.heightAnchor.constraint(equalToConstant: 8), // Отступ между полями
             
-            textView.topAnchor.constraint(equalTo: textField.bottomAnchor, constant: 0),
-            textView.leadingAnchor.constraint(equalTo: customViewController.view.leadingAnchor, constant: 0),
-            textView.trailingAnchor.constraint(equalTo: customViewController.view.trailingAnchor, constant: 0),
-            textView.bottomAnchor.constraint(equalTo: customViewController.view.bottomAnchor, constant: 0)
+            textView.topAnchor.constraint(equalTo: spacerView.bottomAnchor),
+            textView.leadingAnchor.constraint(equalTo: customViewController.view.leadingAnchor, constant: 8),
+            textView.trailingAnchor.constraint(equalTo: customViewController.view.trailingAnchor, constant: -8),
+            textView.bottomAnchor.constraint(equalTo: customViewController.view.bottomAnchor, constant: -8)
         ])
         
         // Добавляем пользовательский контроллер представления в UIAlertController
