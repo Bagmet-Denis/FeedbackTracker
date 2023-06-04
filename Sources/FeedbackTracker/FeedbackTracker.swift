@@ -50,6 +50,7 @@ struct FeedbackModifier: ViewModifier {
                     message: $feedbackRepository.message,
                     title: Localization.text(.feedback, language: language)
                 )
+                .ignoresSafeArea()
             }
         }
     }
