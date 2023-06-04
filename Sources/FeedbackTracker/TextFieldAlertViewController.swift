@@ -116,16 +116,16 @@ public final class TextFieldAlertViewController: UIViewController {
         // Create a UITextField
         let textField = UITextField()
         textField.translatesAutoresizingMaskIntoConstraints = false
-        textField.borderStyle = .none
+//        textField.borderStyle = .none
         customViewController.view.addSubview(textField)
 
         // Create a UITextView
         let textView = UITextView()
         textView.translatesAutoresizingMaskIntoConstraints = false
-        textView.backgroundColor = .white
-        textView.layer.borderWidth = 1.0
-        textView.layer.borderColor = UIColor.gray.cgColor
-        textView.layer.cornerRadius = 6.0
+//        textView.backgroundColor = .white
+//        textView.layer.borderWidth = 1.0
+//        textView.layer.borderColor = UIColor.gray.cgColor
+//        textView.layer.cornerRadius = 6.0
         customViewController.view.addSubview(textView)
 
         // Add constraints for the text field
