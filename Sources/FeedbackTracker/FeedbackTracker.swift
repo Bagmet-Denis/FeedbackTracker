@@ -29,7 +29,6 @@ struct FeedbackModifier: ViewModifier {
     func body(content: Content) -> some View {
         ZStack{
             content
-                .ignoresSafeArea()
                 .actionSheet(isPresented: $isPresented) {
                     ActionSheet(title: Text(Localization.text(.titleSheet, language: language)), buttons: [
                         .default(Text(Localization.text(.quickFeedback, language: language)), action: {
@@ -52,10 +51,8 @@ struct FeedbackModifier: ViewModifier {
                     message: $feedbackRepository.message,
                     title: Localization.text(.feedback, language: language)
                 )
-                .ignoresSafeArea()
             }
         }
-        .ignoresSafeArea()
     }
     
     func openMail() {
