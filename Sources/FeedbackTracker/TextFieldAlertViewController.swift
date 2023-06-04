@@ -139,7 +139,7 @@ public final class TextFieldAlertViewController: UIViewController {
             textView.leadingAnchor.constraint(equalTo: customViewController.view.leadingAnchor, constant: 1).isActive = true
             textView.trailingAnchor.constraint(equalTo: customViewController.view.trailingAnchor, constant: -1).isActive = true
             textView.topAnchor.constraint(equalTo: textField.bottomAnchor, constant: 1).isActive = true
-            textView.bottomAnchor.constraint(equalTo: customViewController.view.bottomAnchor, constant: -1).isActive = true
+            textView.bottomAnchor.constraint(equalTo: customViewController.view.bottomAnchor, constant: -10).isActive = true
         }
         
         // Добавляем пользовательский контроллер представления в UIAlertController
