@@ -112,8 +112,12 @@ public final class TextFieldAlertViewController: UIViewController {
         
         // Создаем пользовательский контроллер представления
         let customViewController = UIViewController()
-        customViewController.view.translatesAutoresizingMaskIntoConstraints = true
         customViewController.view.backgroundColor = .red
+        
+        NSLayoutConstraint.activate([
+            customViewController.view.leadingAnchor.constraint(equalTo: alertController.view.leadingAnchor),
+            customViewController.view.trailingAnchor.constraint(equalTo: alertController.view.trailingAnchor)
+        ])
         
         // Создаем и настраиваем UITextField
         let textField = UITextField()
@@ -138,6 +142,9 @@ public final class TextFieldAlertViewController: UIViewController {
         customViewController.view.addSubview(spacerView)
         
         NSLayoutConstraint.activate([
+            
+            
+            
             textField.topAnchor.constraint(equalTo: customViewController.view.topAnchor, constant: 8),
             textField.leadingAnchor.constraint(equalTo: customViewController.view.leadingAnchor, constant: 8),
             textField.trailingAnchor.constraint(equalTo: customViewController.view.trailingAnchor, constant: -8),
