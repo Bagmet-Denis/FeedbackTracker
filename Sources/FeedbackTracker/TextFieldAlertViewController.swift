@@ -110,40 +110,40 @@ public final class TextFieldAlertViewController: UIViewController {
             preferredStyle: .alert
         )
         
-        if let textField = alert.textFields.first{
-            alertController.addTextField { [weak self] in
-                guard let self = self else { return }
-                $0.text = textField.text.wrappedValue
-                $0.textPublisher.assign(to: \.text.wrappedValue, on: textField).store(in: &self.cancellables)
-                $0.placeholder = textField.placeholder
-                $0.isSecureTextEntry = textField.isSecureTextEntry
-                $0.autocapitalizationType = textField.autocapitalizationType
-                $0.autocorrectionType = textField.autocorrectionType
-                $0.keyboardType = textField.keyboardType
-            }
-        }
+        // Создаем пользовательский контроллер представления
+        let customViewController = UIViewController()
+        customViewController.view.backgroundColor = .clear
         
-        if let textField = alert.textFields.last{
-            // Создаем пользовательский контроллер представления
-            let customViewController = UIViewController()
-            customViewController.view.backgroundColor = .clear
+        // Создаем и настраиваем UITextField
+        let textField = UITextField()
+        textField.translatesAutoresizingMaskIntoConstraints = false
+        textField.backgroundColor = .white
+        textField.placeholder = ""
+        customViewController.view.addSubview(textField)
+        
+        // Создаем и настраиваем UITextView
+        let textView = UITextView()
+        textView.translatesAutoresizingMaskIntoConstraints = false
+        textView.backgroundColor = .red
+        textView.text = ""
+        textView.textColor = .lightGray
+        textView.selectedTextRange = textView.textRange(from: textView.beginningOfDocument, to: textView.beginningOfDocument)
+        customViewController.view.addSubview(textView)
+        
+        NSLayoutConstraint.activate([
+            textField.topAnchor.constraint(equalTo: customViewController.view.topAnchor, constant: 8),
+            textField.leadingAnchor.constraint(equalTo: customViewController.view.leadingAnchor, constant: 8),
+            textField.trailingAnchor.constraint(equalTo: customViewController.view.trailingAnchor, constant: -8),
+            textField.heightAnchor.constraint(equalToConstant: 30),
             
-            // Создаем и настраиваем UITextView
-            let customTextView = UITextView()
-            customTextView.translatesAutoresizingMaskIntoConstraints = false
-            customTextView.text = textField.placeholder
-            customViewController.view.addSubview(customTextView)
-            
-            NSLayoutConstraint.activate([
-                customTextView.topAnchor.constraint(equalTo: customViewController.view.topAnchor, constant: 8),
-                customTextView.leadingAnchor.constraint(equalTo: customViewController.view.leadingAnchor, constant: 8),
-                customTextView.trailingAnchor.constraint(equalTo: customViewController.view.trailingAnchor, constant: -8),
-                customTextView.bottomAnchor.constraint(equalTo: customViewController.view.bottomAnchor, constant: -8)
-            ])
-            
-            // Добавляем пользовательский контроллер представления в UIAlertController
-            alertController.setValue(customViewController, forKey: "contentViewController")
-        }
+            textView.topAnchor.constraint(equalTo: textField.bottomAnchor, constant: 8),
+            textView.leadingAnchor.constraint(equalTo: customViewController.view.leadingAnchor, constant: 8),
+            textView.trailingAnchor.constraint(equalTo: customViewController.view.trailingAnchor, constant: -8),
+            textView.bottomAnchor.constraint(equalTo: customViewController.view.bottomAnchor, constant: -8)
+        ])
+        
+        // Добавляем пользовательский контроллер представления в UIAlertController
+        alertController.setValue(customViewController, forKey: "contentViewController")
         
         alert.actions.forEach { action in
             let alertAction = UIAlertAction(
@@ -151,7 +151,9 @@ public final class TextFieldAlertViewController: UIViewController {
                 style: action.style,
                 handler: { [weak self, weak alertController] _ in
                     self?.alert.isPresented?.wrappedValue = false
-                    action.closure?(alertController?.textFields?.map { $0.text ?? "" } ?? [])
+                    let textFieldText = textField.text ?? ""
+                    let textViewText = textView.text ?? ""
+                    action.closure?([textFieldText, textViewText])
                 }
             )
             alertAction.isEnabled = action.isEnabled.wrappedValue
@@ -159,5 +161,10 @@ public final class TextFieldAlertViewController: UIViewController {
         }
         
         present(alertController, animated: true)
+        
+        // Сделать автофокус на UITextField после отображения
+        DispatchQueue.main.async {
+            textField.becomeFirstResponder()
+        }
     }
 }
