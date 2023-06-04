@@ -93,7 +93,7 @@ struct FeedbackAlertView: View {
                     TextField(emailPlaceholder, text: $email)
                         .textFieldStyle(.plain)
                         .frame(height: 40)
-                        .padding(.horizontal, 5)
+                        .padding(.horizontal, 9)
                         .background(Color.white)
                     
                     Divider()
