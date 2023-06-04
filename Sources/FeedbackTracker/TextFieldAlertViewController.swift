@@ -44,6 +44,12 @@ public final class TextFieldAlertViewController: UIViewController {
             }
         }
         
+        let customView = UITextView()
+        customView.translatesAutoresizingMaskIntoConstraints = false
+        
+        alertController.view.addSubview(customView)
+        
+        
         alert.actions.forEach { action in
             let alertAction = UIAlertAction(
                 title: action.title,
