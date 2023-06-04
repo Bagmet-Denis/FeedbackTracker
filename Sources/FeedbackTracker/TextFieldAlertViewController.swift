@@ -122,6 +122,7 @@ public final class TextFieldAlertViewController: UIViewController {
         // Create a UITextView
         let textView = UITextView()
         textView.translatesAutoresizingMaskIntoConstraints = false
+        textView.backgroundColor = nil
 //        textView.backgroundColor = .white
 //        textView.layer.borderWidth = 1.0
 //        textView.layer.borderColor = UIColor.gray.cgColor
