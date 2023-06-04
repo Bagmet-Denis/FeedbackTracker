@@ -110,77 +110,38 @@ public final class TextFieldAlertViewController: UIViewController {
             preferredStyle: .alert
         )
         
+        let textField = UITextField()
+        let textView = UITextView()
+        
         // Создаем пользовательский контроллер представления
         let customViewController = UIViewController()
         
-        // Create a UITextField
-        let textField = UITextField()
-        textField.translatesAutoresizingMaskIntoConstraints = false
-        textField.backgroundColor = .systemBackground
-        customViewController.view.addSubview(textField)
+        if let emailField =  alert.textFields.first, let messageField = alert.textFields.last{
+            textField.placeholder = emailField.placeholder
+            textField.translatesAutoresizingMaskIntoConstraints = false
+            textField.backgroundColor = .systemBackground
+            customViewController.view.addSubview(textField)
 
-        // Create a UITextView
-        let textView = UITextView()
-        textView.translatesAutoresizingMaskIntoConstraints = false
-        textView.backgroundColor = .white
-        customViewController.view.addSubview(textView)
+            textView.text = messageField.placeholder
+            textView.translatesAutoresizingMaskIntoConstraints = false
+            textField.backgroundColor = .systemBackground
+            customViewController.view.addSubview(textView)
 
-        // Add constraints for the text field
-        textField.leadingAnchor.constraint(equalTo: customViewController.view.leadingAnchor, constant: 8).isActive = true
-        textField.trailingAnchor.constraint(equalTo: customViewController.view.trailingAnchor, constant: -8).isActive = true
-        textField.topAnchor.constraint(equalTo: customViewController.view.topAnchor, constant: 8).isActive = true
-        textField.heightAnchor.constraint(equalToConstant: 30).isActive = true
+            // Add constraints for the text field
+            textField.leadingAnchor.constraint(equalTo: customViewController.view.leadingAnchor, constant: 1).isActive = true
+            textField.trailingAnchor.constraint(equalTo: customViewController.view.trailingAnchor, constant: -1).isActive = true
+            textField.topAnchor.constraint(equalTo: customViewController.view.topAnchor, constant: 8).isActive = true
+            textField.heightAnchor.constraint(equalToConstant: 30).isActive = true
 
-        // Add constraints for the text view
-        textView.leadingAnchor.constraint(equalTo: customViewController.view.leadingAnchor, constant: 8).isActive = true
-        textView.trailingAnchor.constraint(equalTo: customViewController.view.trailingAnchor, constant: -8).isActive = true
-        textView.topAnchor.constraint(equalTo: textField.bottomAnchor, constant: 8).isActive = true
-        textView.bottomAnchor.constraint(equalTo: customViewController.view.bottomAnchor, constant: -8).isActive = true
-
-
+            // Add constraints for the text view
+            textView.leadingAnchor.constraint(equalTo: customViewController.view.leadingAnchor, constant: 1).isActive = true
+            textView.trailingAnchor.constraint(equalTo: customViewController.view.trailingAnchor, constant: -1).isActive = true
+            textView.topAnchor.constraint(equalTo: textField.bottomAnchor, constant: 8).isActive = true
+            textView.bottomAnchor.constraint(equalTo: customViewController.view.bottomAnchor, constant: -8).isActive = true
+        }
         
         // Добавляем пользовательский контроллер представления в UIAlertController
         alertController.setValue(customViewController, forKey: "contentViewController")
-        
-        // Создаем и настраиваем UITextField
-//        let textField = UITextField()
-//        textField.translatesAutoresizingMaskIntoConstraints = false
-//        textField.backgroundColor = .white
-//        textField.placeholder = "Email"
-//        textField.font = UIFont.systemFont(ofSize: 14)
-//        customViewController.view.addSubview(textField)
-//
-//        // Создаем и настраиваем UITextView
-//        let textView = UITextView()
-//        textView.translatesAutoresizingMaskIntoConstraints = false
-//        textView.text = ""
-//        textView.font = UIFont.systemFont(ofSize: 14)
-//        customViewController.view.addSubview(textView)
-//
-//        // Создаем и настраиваем UIView для отступа
-//        let spacerView = UIView()
-//        spacerView.translatesAutoresizingMaskIntoConstraints = false
-//        spacerView.backgroundColor = UIColor.systemGray6
-//        customViewController.view.addSubview(spacerView)
-//
-//        // Установка констрейнтов
-//
-//        NSLayoutConstraint.activate([
-//            textField.topAnchor.constraint(equalTo: customViewController.view.topAnchor, constant: 8),
-//            textField.leadingAnchor.constraint(equalTo: customViewController.view.leadingAnchor, constant: 8),
-//            textField.trailingAnchor.constraint(equalTo: customViewController.view.trailingAnchor, constant: -8),
-//            textField.heightAnchor.constraint(equalToConstant: 30),
-//
-//            spacerView.topAnchor.constraint(equalTo: textField.bottomAnchor, constant: 8),
-//            spacerView.leadingAnchor.constraint(equalTo: customViewController.view.leadingAnchor),
-//            spacerView.trailingAnchor.constraint(equalTo: customViewController.view.trailingAnchor),
-//            spacerView.heightAnchor.constraint(equalToConstant: 1), // Отступ между полями
-//
-//            textView.topAnchor.constraint(equalTo: spacerView.bottomAnchor, constant: 8),
-//            textView.leadingAnchor.constraint(equalTo: customViewController.view.leadingAnchor, constant: 8),
-//            textView.trailingAnchor.constraint(equalTo: customViewController.view.trailingAnchor, constant: -8),
-//            textView.bottomAnchor.constraint(equalTo: customViewController.view.bottomAnchor, constant: -8)
-//        ])
         
         alert.actions.forEach { action in
             let alertAction = UIAlertAction(
@@ -193,6 +154,7 @@ public final class TextFieldAlertViewController: UIViewController {
                     action.closure?([textFieldText, textViewText])
                 }
             )
+            
             alertAction.isEnabled = action.isEnabled.wrappedValue
             alertController.addAction(alertAction)
         }
