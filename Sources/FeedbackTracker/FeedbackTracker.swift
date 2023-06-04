@@ -53,6 +53,7 @@ struct FeedbackModifier: ViewModifier {
                 .ignoresSafeArea()
             }
         }
+        .ignoresSafeArea()
     }
     
     func openMail() {
