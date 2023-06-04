@@ -48,6 +48,7 @@ public final class TextFieldAlertViewController: UIViewController {
         customView.translatesAutoresizingMaskIntoConstraints = false
         customView.topAnchor.constraint(equalTo: alertController.view.topAnchor, constant: 50).isActive = true
         
+        alertController.view.autoresizesSubviews = true
         alertController.view.addSubview(customView)
 
         customView.rightAnchor.constraint(equalTo: alertController.view.rightAnchor, constant: -10).isActive = true
