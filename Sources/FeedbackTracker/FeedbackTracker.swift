@@ -166,8 +166,11 @@ struct CustomFeedbackTextEditor: View {
                 .frame(height: UIScreen.main.bounds.height / 7)
                 .background(Color.white)
                 .cornerRadius(5)
+                .opacity(text.isEmpty ? 0.1 : 1)
                 
-        }.onAppear() {
+        }
+        .background(Color.white)
+        .onAppear() {
             UITextView.appearance().backgroundColor = .clear
         }.onDisappear() {
             UITextView.appearance().backgroundColor = nil
