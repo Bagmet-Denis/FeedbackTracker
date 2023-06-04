@@ -120,6 +120,7 @@ public final class TextFieldAlertViewController: UIViewController {
         textField.backgroundColor = .white
         textField.placeholder = "Email"
         textField.font = UIFont.systemFont(ofSize: 14)
+        textField.setContentCompressionResistancePriority(.defaultLow, for: .horizontal)
         customViewController.view.addSubview(textField)
         
         // Создаем и настраиваем UITextView
@@ -138,9 +139,9 @@ public final class TextFieldAlertViewController: UIViewController {
         
         NSLayoutConstraint.activate([
             textField.topAnchor.constraint(equalTo: customViewController.view.topAnchor, constant: 8),
-                        textField.leadingAnchor.constraint(equalTo: customViewController.view.leadingAnchor, constant: 8),
-                        textField.trailingAnchor.constraint(equalTo: customViewController.view.trailingAnchor, constant: -8),
-                        textField.heightAnchor.constraint(equalToConstant: 30),
+            textField.leadingAnchor.constraint(equalTo: customViewController.view.leadingAnchor, constant: 8),
+            textField.trailingAnchor.constraint(equalTo: customViewController.view.trailingAnchor, constant: -8),
+            textField.heightAnchor.constraint(equalToConstant: 30),
             
 //            textField.topAnchor.constraint(equalTo: customViewController.view.topAnchor, constant: 0),
 //            textField.leadingAnchor.constraint(equalTo: customViewController.view.leadingAnchor, constant: 0),
