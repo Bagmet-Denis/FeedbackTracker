@@ -137,7 +137,7 @@ struct FeedbackAlertView: View {
                             .padding(.vertical, 15)
                             .contentShape(Rectangle())
                         }
-                        .disabled(email.isEmpty ? true : false)
+                        .disabled(email.contains("@") && !message.isEmpty ? false : true)
                     }
                 }
                 .frame(width: UIScreen.main.bounds.width / 1.4)
