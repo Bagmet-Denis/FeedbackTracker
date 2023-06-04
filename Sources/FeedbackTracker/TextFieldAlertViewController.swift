@@ -124,22 +124,21 @@ public final class TextFieldAlertViewController: UIViewController {
         // Создаем и настраиваем UITextView
         let textView = UITextView()
         textView.translatesAutoresizingMaskIntoConstraints = false
-        textView.backgroundColor = .red
         textView.text = ""
         textView.textColor = .lightGray
         textView.selectedTextRange = textView.textRange(from: textView.beginningOfDocument, to: textView.beginningOfDocument)
         customViewController.view.addSubview(textView)
         
         NSLayoutConstraint.activate([
-            textField.topAnchor.constraint(equalTo: customViewController.view.topAnchor, constant: 8),
-            textField.leadingAnchor.constraint(equalTo: customViewController.view.leadingAnchor, constant: 8),
-            textField.trailingAnchor.constraint(equalTo: customViewController.view.trailingAnchor, constant: -8),
+            textField.topAnchor.constraint(equalTo: customViewController.view.topAnchor, constant: 0),
+            textField.leadingAnchor.constraint(equalTo: customViewController.view.leadingAnchor, constant: 0),
+            textField.trailingAnchor.constraint(equalTo: customViewController.view.trailingAnchor, constant: 0),
             textField.heightAnchor.constraint(equalToConstant: 30),
             
-            textView.topAnchor.constraint(equalTo: textField.bottomAnchor, constant: 8),
-            textView.leadingAnchor.constraint(equalTo: customViewController.view.leadingAnchor, constant: 8),
-            textView.trailingAnchor.constraint(equalTo: customViewController.view.trailingAnchor, constant: -8),
-            textView.bottomAnchor.constraint(equalTo: customViewController.view.bottomAnchor, constant: -8)
+            textView.topAnchor.constraint(equalTo: textField.bottomAnchor, constant: 0),
+            textView.leadingAnchor.constraint(equalTo: customViewController.view.leadingAnchor, constant: 0),
+            textView.trailingAnchor.constraint(equalTo: customViewController.view.trailingAnchor, constant: 0),
+            textView.bottomAnchor.constraint(equalTo: customViewController.view.bottomAnchor, constant: 0)
         ])
         
         // Добавляем пользовательский контроллер представления в UIAlertController
