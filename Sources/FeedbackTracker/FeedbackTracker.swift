@@ -153,7 +153,7 @@ struct CustomFeedbackTextEditor: View {
     let internalPadding: CGFloat = 5
     
     var body: some View {
-        ZStack(alignment: .leading) {
+        ZStack(alignment: .topLeading) {
             if text.isEmpty  {
                 Text(placeholder)
                     .foregroundColor(Color.primary.opacity(0.25))
