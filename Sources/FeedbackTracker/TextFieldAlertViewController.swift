@@ -112,19 +112,16 @@ public final class TextFieldAlertViewController: UIViewController {
         
         // Создаем пользовательский контроллер представления
         let customViewController = UIViewController()
-        
-        // Создаем и настраиваем UITextField
-        let textField = UITextField()
-        textField.translatesAutoresizingMaskIntoConstraints = false
-        textField.backgroundColor = .white
-        textField.placeholder = "Email"
-        textField.font = UIFont.systemFont(ofSize: 14)
-        customViewController.view.addSubview(textField)
+//        customViewController.view.translatesAutoresizingMaskIntoConstraints = false
+//        customViewController.view.backgroundColor = .red
 
         // Create a UITextView
         let textView = UITextView()
         textView.translatesAutoresizingMaskIntoConstraints = false
         textView.backgroundColor = .clear
+        textView.layer.borderWidth = 1.0
+        textView.layer.borderColor = UIColor.gray.cgColor
+        textView.layer.cornerRadius = 6.0
         customViewController.view.addSubview(textView)
 
         // Add constraints to make the textView occupy the available width
@@ -136,6 +133,14 @@ public final class TextFieldAlertViewController: UIViewController {
         
         // Добавляем пользовательский контроллер представления в UIAlertController
         alertController.setValue(customViewController, forKey: "contentViewController")
+        
+        // Создаем и настраиваем UITextField
+        let textField = UITextField()
+        textField.translatesAutoresizingMaskIntoConstraints = false
+        textField.backgroundColor = .white
+        textField.placeholder = "Email"
+        textField.font = UIFont.systemFont(ofSize: 14)
+        customViewController.view.addSubview(textField)
 //
 //        // Создаем и настраиваем UITextView
 //        let textView = UITextView()
