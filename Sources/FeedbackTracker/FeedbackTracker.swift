@@ -50,7 +50,11 @@ struct FeedbackModifier: ViewModifier {
                     messagePlaceholder: Localization.text(.message, language: language),
                     message: $feedbackRepository.message,
                     title: Localization.text(.feedback, language: language)
-                )
+                ){
+                    Task{
+                        await feedbackRepository.sendFeedback(urlPath: urlServer)
+                    }
+                }
             }
         }
     }
@@ -75,6 +79,8 @@ struct FeedbackAlertView: View {
     
     let title: String
     
+    var action: ()->Void
+    
     var body: some View {
         ZStack {
             if isPresented {
@@ -91,6 +97,7 @@ struct FeedbackAlertView: View {
                     Divider()
                     
                     TextField(emailPlaceholder, text: $email)
+                        .disableAutocorrection(true)
                         .textFieldStyle(.plain)
                         .frame(height: 40)
                         .padding(.horizontal, 9)
@@ -121,7 +128,7 @@ struct FeedbackAlertView: View {
                             .frame(height: 50)
                         
                         Button {
-                            
+                            action()
                         } label: {
                             HStack{
                                 Spacer(minLength: 0)
@@ -133,6 +140,7 @@ struct FeedbackAlertView: View {
                             .padding(.vertical, 15)
                             .contentShape(Rectangle())
                         }
+                        .disabled(email.isEmpty ? true : false)
                     }
                 }
                 .frame(width: UIScreen.main.bounds.width / 1.4)
