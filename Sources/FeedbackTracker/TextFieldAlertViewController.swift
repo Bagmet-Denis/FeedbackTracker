@@ -109,6 +109,7 @@ public final class TextFieldAlertViewController: UIViewController {
             message: alert.message,
             preferredStyle: .alert
         )
+        
         alert.actions.forEach { action in
             let alertAction = UIAlertAction(
                 title: action.title,
@@ -133,7 +134,7 @@ public final class TextFieldAlertViewController: UIViewController {
         customView.bottomAnchor.constraint(equalTo: alertController.view.bottomAnchor, constant: -60).isActive = true
         customView.backgroundColor = UIColor.red
 
-        alertController.view.autoresizesSubviews = true
+//        alertController.view.autoresizesSubviews = true
 
         present(alertController, animated: true)
     }
