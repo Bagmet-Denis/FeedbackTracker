@@ -29,6 +29,7 @@ struct FeedbackModifier: ViewModifier {
     func body(content: Content) -> some View {
         ZStack{
             content
+                .ignoresSafeArea()
                 .actionSheet(isPresented: $isPresented) {
                     ActionSheet(title: Text(Localization.text(.titleSheet, language: language)), buttons: [
                         .default(Text(Localization.text(.quickFeedback, language: language)), action: {
@@ -40,6 +41,7 @@ struct FeedbackModifier: ViewModifier {
                         .cancel(Text(Localization.text(.cancel, language: language)))
                     ])
                 }
+            
             
             if showAlert{
                 FeedbackAlertView(
