@@ -116,7 +116,7 @@ public final class TextFieldAlertViewController: UIViewController {
         // Create a UITextField
         let textField = UITextField()
         textField.translatesAutoresizingMaskIntoConstraints = false
-        textField.backgroundColor = .white
+        textField.backgroundColor = .systemBackground
         customViewController.view.addSubview(textField)
 
         // Create a UITextView
