@@ -112,7 +112,7 @@ public final class TextFieldAlertViewController: UIViewController {
         
         // Создаем пользовательский контроллер представления
         let customViewController = UIViewController()
-        customViewController.view.translatesAutoresizingMaskIntoConstraints = false
+        customViewController.view.translatesAutoresizingMaskIntoConstraints = true
         customViewController.view.backgroundColor = .red
         
         // Создаем и настраиваем UITextField
