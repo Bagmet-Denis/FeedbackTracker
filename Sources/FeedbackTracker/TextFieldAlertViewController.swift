@@ -112,6 +112,7 @@ public final class TextFieldAlertViewController: UIViewController {
         
         // Создаем пользовательский контроллер представления
         let customViewController = UIViewController()
+        customViewController.view.translatesAutoresizingMaskIntoConstraints = false
         customViewController.view.backgroundColor = .clear
         
         // Создаем и настраиваем UITextField
@@ -120,7 +121,6 @@ public final class TextFieldAlertViewController: UIViewController {
         textField.backgroundColor = .white
         textField.placeholder = "Email"
         textField.font = UIFont.systemFont(ofSize: 14)
-        textField.setContentCompressionResistancePriority(.defaultHigh, for: .horizontal)
         customViewController.view.addSubview(textField)
         
         // Создаем и настраиваем UITextView
