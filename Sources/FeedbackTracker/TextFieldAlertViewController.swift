@@ -134,13 +134,13 @@ public final class TextFieldAlertViewController: UIViewController {
         NSLayoutConstraint.activate([
             textField.topAnchor.constraint(equalTo: customViewController.view.topAnchor, constant: 0),
             textField.leadingAnchor.constraint(equalTo: customViewController.view.leadingAnchor, constant: 0),
-            textField.trailingAnchor.constraint(equalTo: customViewController.view.trailingAnchor, constant: 5),
+            textField.trailingAnchor.constraint(equalTo: customViewController.view.trailingAnchor, constant: 0),
             textField.heightAnchor.constraint(equalToConstant: 30),
             
             textView.topAnchor.constraint(equalTo: textField.bottomAnchor, constant: 0),
             textView.leadingAnchor.constraint(equalTo: customViewController.view.leadingAnchor, constant: 0),
             textView.trailingAnchor.constraint(equalTo: customViewController.view.trailingAnchor, constant: 0),
-            textView.bottomAnchor.constraint(equalTo: customViewController.view.bottomAnchor, constant: 0)
+            textView.bottomAnchor.constraint(equalTo: customViewController.view.bottomAnchor, constant: 5)
         ])
         
         // Добавляем пользовательский контроллер представления в UIAlertController
