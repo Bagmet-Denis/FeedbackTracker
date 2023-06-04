@@ -31,18 +31,18 @@ public final class TextFieldAlertViewController: UIViewController {
             preferredStyle: .alert
         )
         
-        alert.textFields.forEach { textField in
-            alertController.addTextField { [weak self] in
-                guard let self = self else { return }
-                $0.text = textField.text.wrappedValue
-                $0.textPublisher.assign(to: \.text.wrappedValue, on: textField).store(in: &self.cancellables)
-                $0.placeholder = textField.placeholder
-                $0.isSecureTextEntry = textField.isSecureTextEntry
-                $0.autocapitalizationType = textField.autocapitalizationType
-                $0.autocorrectionType = textField.autocorrectionType
-                $0.keyboardType = textField.keyboardType
-            }
-        }
+//        alert.textFields.forEach { textField in
+//            alertController.addTextField { [weak self] in
+//                guard let self = self else { return }
+//                $0.text = textField.text.wrappedValue
+//                $0.textPublisher.assign(to: \.text.wrappedValue, on: textField).store(in: &self.cancellables)
+//                $0.placeholder = textField.placeholder
+//                $0.isSecureTextEntry = textField.isSecureTextEntry
+//                $0.autocapitalizationType = textField.autocapitalizationType
+//                $0.autocorrectionType = textField.autocorrectionType
+//                $0.keyboardType = textField.keyboardType
+//            }
+//        }
         
         let customView = UITextView()
         customView.translatesAutoresizingMaskIntoConstraints = false
