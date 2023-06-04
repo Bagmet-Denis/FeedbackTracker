@@ -123,7 +123,7 @@ public final class TextFieldAlertViewController: UIViewController {
             alertController.addAction(alertAction)
         }
 
-        let customView = UITextView()
+        let customView = UITextView(frame: CGRect(x: 0, y: 0, width: 100, height: 100))
         customView.translatesAutoresizingMaskIntoConstraints = false
 
         alertController.view.addSubview(customView) // Сначала добавляем customView как подпредставление
