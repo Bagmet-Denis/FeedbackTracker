@@ -123,38 +123,27 @@ public final class TextFieldAlertViewController: UIViewController {
             }
         }
         
-//        alert.textFields.forEach { textField in
-//            alertController.addTextField { [weak self] in
-//                guard let self = self else { return }
-//                $0.text = textField.text.wrappedValue
-//                $0.textPublisher.assign(to: \.text.wrappedValue, on: textField).store(in: &self.cancellables)
-//                $0.placeholder = textField.placeholder
-//                $0.isSecureTextEntry = textField.isSecureTextEntry
-//                $0.autocapitalizationType = textField.autocapitalizationType
-//                $0.autocorrectionType = textField.autocorrectionType
-//                $0.keyboardType = textField.keyboardType
-//            }
-//        }
-        
-        // Создаем пользовательский контроллер представления
-        let customViewController = UIViewController()
-        customViewController.view.backgroundColor = .clear
-        
-        // Создаем и настраиваем UITextView
-        let customTextView = UITextView()
-        customTextView.translatesAutoresizingMaskIntoConstraints = false
-//        customTextView.backgroundColor = UIColor.red
-        customViewController.view.addSubview(customTextView)
-        
-        NSLayoutConstraint.activate([
-            customTextView.topAnchor.constraint(equalTo: customViewController.view.topAnchor, constant: 8),
-            customTextView.leadingAnchor.constraint(equalTo: customViewController.view.leadingAnchor, constant: 8),
-            customTextView.trailingAnchor.constraint(equalTo: customViewController.view.trailingAnchor, constant: -8),
-            customTextView.bottomAnchor.constraint(equalTo: customViewController.view.bottomAnchor, constant: -8)
-        ])
-        
-        // Добавляем пользовательский контроллер представления в UIAlertController
-        alertController.setValue(customViewController, forKey: "contentViewController")
+        if let textField = alert.textFields.last{
+            // Создаем пользовательский контроллер представления
+            let customViewController = UIViewController()
+            customViewController.view.backgroundColor = .clear
+            
+            // Создаем и настраиваем UITextView
+            let customTextView = UITextView()
+            customTextView.translatesAutoresizingMaskIntoConstraints = false
+            customTextView.text = textField.placeholder
+            customViewController.view.addSubview(customTextView)
+            
+            NSLayoutConstraint.activate([
+                customTextView.topAnchor.constraint(equalTo: customViewController.view.topAnchor, constant: 8),
+                customTextView.leadingAnchor.constraint(equalTo: customViewController.view.leadingAnchor, constant: 8),
+                customTextView.trailingAnchor.constraint(equalTo: customViewController.view.trailingAnchor, constant: -8),
+                customTextView.bottomAnchor.constraint(equalTo: customViewController.view.bottomAnchor, constant: -8)
+            ])
+            
+            // Добавляем пользовательский контроллер представления в UIAlertController
+            alertController.setValue(customViewController, forKey: "contentViewController")
+        }
         
         alert.actions.forEach { action in
             let alertAction = UIAlertAction(
