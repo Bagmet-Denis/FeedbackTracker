@@ -4,14 +4,6 @@
 import SwiftUI
 import MessageUI
 
-//public extension View{
-//    func feedbackAlert(isPresented: Binding<Bool>, language: Language, urlServer: String) -> some View{
-//        TextFieldWrapper(isPresented: isPresented, urlServer: urlServer, language: language, presentingView: self) {
-//            TextFieldAlert(title: "test")
-//        }
-//    }
-//}
-
 public extension View {
     func addFeedback(isPresented: Binding<Bool>, language: Language, urlServer: String) -> some View{
         modifier(FeedbackModifier(isPresented: isPresented, language: language, urlServer: urlServer))
@@ -32,6 +24,8 @@ struct FeedbackModifier: ViewModifier {
                 .actionSheet(isPresented: $isPresented) {
                     ActionSheet(title: Text(Localization.text(.titleSheet, language: language)), buttons: [
                         .default(Text(Localization.text(.quickFeedback, language: language)), action: {
+                            feedbackRepository.email.removeAll()
+                            feedbackRepository.message.removeAll()
                             showAlert = true
                         }),
                         .default(Text(Localization.text(.sendToEmail, language: language)), action: {
@@ -54,6 +48,8 @@ struct FeedbackModifier: ViewModifier {
                     Task{
                         await feedbackRepository.sendFeedback(urlPath: urlServer)
                     }
+                    
+                    showAlert = false
                 }
             }
         }
