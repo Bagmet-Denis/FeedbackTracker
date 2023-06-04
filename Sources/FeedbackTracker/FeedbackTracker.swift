@@ -27,28 +27,30 @@ struct FeedbackModifier: ViewModifier {
     @State var showAlert: Bool = false
     
     func body(content: Content) -> some View {
-        content
-            .actionSheet(isPresented: $isPresented) {
-                ActionSheet(title: Text(Localization.text(.titleSheet, language: language)), buttons: [
-                    .default(Text(Localization.text(.quickFeedback, language: language)), action: {
-                        showAlert = true
-                    }),
-                    .default(Text(Localization.text(.sendToEmail, language: language)), action: {
-                        openMail()
-                    }),
-                    .cancel(Text(Localization.text(.cancel, language: language)))
-                ])
+        ZStack{
+            content
+                .actionSheet(isPresented: $isPresented) {
+                    ActionSheet(title: Text(Localization.text(.titleSheet, language: language)), buttons: [
+                        .default(Text(Localization.text(.quickFeedback, language: language)), action: {
+                            showAlert = true
+                        }),
+                        .default(Text(Localization.text(.sendToEmail, language: language)), action: {
+                            openMail()
+                        }),
+                        .cancel(Text(Localization.text(.cancel, language: language)))
+                    ])
+                }
+            
+            if showAlert{
+                FeedbackAlertView(
+                    isPresented: $showAlert,
+                    emailPlaceholder: Localization.text(.email, language: language),
+                    email: $feedbackRepository.email,
+                    messagePlaceholder: Localization.text(.message, language: language),
+                    message: $feedbackRepository.message,
+                    title: Localization.text(.feedback, language: language)
+                )
             }
-        
-        if showAlert{
-            FeedbackAlertView(
-                isPresented: $showAlert,
-                emailPlaceholder: Localization.text(.email, language: language),
-                email: $feedbackRepository.email,
-                messagePlaceholder: Localization.text(.message, language: language),
-                message: $feedbackRepository.message,
-                title: Localization.text(.feedback, language: language)
-            )
         }
     }
     
@@ -132,7 +134,7 @@ struct FeedbackAlertView: View {
                         }
                     }
                 }
-                .frame(width: UIScreen.main.bounds.width / 1.5)
+                .frame(width: UIScreen.main.bounds.width / 1.4)
                 .background(Color(UIColor.systemGray6))
                 .cornerRadius(15)
                 .onAppear {
