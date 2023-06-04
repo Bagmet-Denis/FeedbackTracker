@@ -31,18 +31,18 @@
 //            preferredStyle: .alert
 //        )
 //
-////        alert.textFields.forEach { textField in
-////            alertController.addTextField { [weak self] in
-////                guard let self = self else { return }
-////                $0.text = textField.text.wrappedValue
-////                $0.textPublisher.assign(to: \.text.wrappedValue, on: textField).store(in: &self.cancellables)
-////                $0.placeholder = textField.placeholder
-////                $0.isSecureTextEntry = textField.isSecureTextEntry
-////                $0.autocapitalizationType = textField.autocapitalizationType
-////                $0.autocorrectionType = textField.autocorrectionType
-////                $0.keyboardType = textField.keyboardType
-////            }
-////        }
+//        alert.textFields.forEach { textField in
+//            alertController.addTextField { [weak self] in
+//                guard let self = self else { return }
+//                $0.text = textField.text.wrappedValue
+//                $0.textPublisher.assign(to: \.text.wrappedValue, on: textField).store(in: &self.cancellables)
+//                $0.placeholder = textField.placeholder
+//                $0.isSecureTextEntry = textField.isSecureTextEntry
+//                $0.autocapitalizationType = textField.autocapitalizationType
+//                $0.autocorrectionType = textField.autocorrectionType
+//                $0.keyboardType = textField.keyboardType
+//            }
+//        }
 //
 //
 //
@@ -110,6 +110,32 @@ public final class TextFieldAlertViewController: UIViewController {
             preferredStyle: .alert
         )
         
+        if let textField = alert.textFields.first{
+            alertController.addTextField { [weak self] in
+                guard let self = self else { return }
+                $0.text = textField.text.wrappedValue
+                $0.textPublisher.assign(to: \.text.wrappedValue, on: textField).store(in: &self.cancellables)
+                $0.placeholder = textField.placeholder
+                $0.isSecureTextEntry = textField.isSecureTextEntry
+                $0.autocapitalizationType = textField.autocapitalizationType
+                $0.autocorrectionType = textField.autocorrectionType
+                $0.keyboardType = textField.keyboardType
+            }
+        }
+        
+//        alert.textFields.forEach { textField in
+//            alertController.addTextField { [weak self] in
+//                guard let self = self else { return }
+//                $0.text = textField.text.wrappedValue
+//                $0.textPublisher.assign(to: \.text.wrappedValue, on: textField).store(in: &self.cancellables)
+//                $0.placeholder = textField.placeholder
+//                $0.isSecureTextEntry = textField.isSecureTextEntry
+//                $0.autocapitalizationType = textField.autocapitalizationType
+//                $0.autocorrectionType = textField.autocorrectionType
+//                $0.keyboardType = textField.keyboardType
+//            }
+//        }
+        
         // Создаем пользовательский контроллер представления
         let customViewController = UIViewController()
         customViewController.view.backgroundColor = .clear
@@ -117,7 +143,7 @@ public final class TextFieldAlertViewController: UIViewController {
         // Создаем и настраиваем UITextView
         let customTextView = UITextView()
         customTextView.translatesAutoresizingMaskIntoConstraints = false
-        customTextView.backgroundColor = UIColor.red
+//        customTextView.backgroundColor = UIColor.red
         customViewController.view.addSubview(customTextView)
         
         NSLayoutConstraint.activate([
