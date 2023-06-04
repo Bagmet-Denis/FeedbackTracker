@@ -145,7 +145,7 @@ public final class TextFieldAlertViewController: UIViewController {
             spacerView.topAnchor.constraint(equalTo: textField.bottomAnchor, constant: 8),
             spacerView.leadingAnchor.constraint(equalTo: customViewController.view.leadingAnchor),
             spacerView.trailingAnchor.constraint(equalTo: customViewController.view.trailingAnchor),
-            spacerView.heightAnchor.constraint(equalToConstant: 8), // Отступ между полями
+            spacerView.heightAnchor.constraint(equalToConstant: 1), // Отступ между полями
             
             textView.topAnchor.constraint(equalTo: textField.bottomAnchor, constant: 0),
             textView.leadingAnchor.constraint(equalTo: customViewController.view.leadingAnchor, constant: 0),
