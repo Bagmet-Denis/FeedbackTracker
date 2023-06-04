@@ -133,6 +133,7 @@ public final class TextFieldAlertViewController: UIViewController {
         // Создаем и настраиваем UIView для отступа
                 let spacerView = UIView()
                 spacerView.translatesAutoresizingMaskIntoConstraints = false
+        spacerView.backgroundColor = UIColor.systemGray6
                 customViewController.view.addSubview(spacerView)
         
         NSLayoutConstraint.activate([
