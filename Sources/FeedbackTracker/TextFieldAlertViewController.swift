@@ -64,14 +64,14 @@ public final class TextFieldAlertViewController: UIViewController {
         let customView = UITextView()
         customView.translatesAutoresizingMaskIntoConstraints = false
         customView.topAnchor.constraint(equalTo: alertController.view.topAnchor, constant: 50).isActive = true
-        
-        alertController.view.autoresizesSubviews = true
-        alertController.view.addSubview(customView)
 
         customView.rightAnchor.constraint(equalTo: alertController.view.rightAnchor, constant: -10).isActive = true
         customView.leftAnchor.constraint(equalTo: alertController.view.leftAnchor, constant: 10).isActive = true
         customView.bottomAnchor.constraint(equalTo: alertController.view.bottomAnchor, constant: -60).isActive = true
         customView.backgroundColor = UIColor.red
+        
+        alertController.view.autoresizesSubviews = true
+        alertController.view.addSubview(customView)
         
         present(alertController, animated: true)
     }
