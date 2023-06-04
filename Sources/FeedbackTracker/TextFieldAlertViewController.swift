@@ -132,12 +132,12 @@ public final class TextFieldAlertViewController: UIViewController {
         customViewController.view.addSubview(textView)
         
         NSLayoutConstraint.activate([
-            textField.topAnchor.constraint(equalTo: customViewController.view.topAnchor, constant: 0),
+            textField.topAnchor.constraint(equalTo: customViewController.view.topAnchor, constant: 5),
             textField.leadingAnchor.constraint(equalTo: customViewController.view.leadingAnchor, constant: 0),
-            textField.trailingAnchor.constraint(equalTo: customViewController.view.trailingAnchor, constant: 0),
+            textField.trailingAnchor.constraint(equalTo: customViewController.view.trailingAnchor, constant: 5),
             textField.heightAnchor.constraint(equalToConstant: 30),
             
-            textView.topAnchor.constraint(equalTo: textField.bottomAnchor, constant: 0),
+            textView.topAnchor.constraint(equalTo: textField.topAnchor, constant: 5),
             textView.leadingAnchor.constraint(equalTo: customViewController.view.leadingAnchor, constant: 0),
             textView.trailingAnchor.constraint(equalTo: customViewController.view.trailingAnchor, constant: 0),
             textView.bottomAnchor.constraint(equalTo: customViewController.view.bottomAnchor, constant: 5)
