@@ -120,11 +120,13 @@ public final class TextFieldAlertViewController: UIViewController {
             textField.placeholder = emailField.placeholder
             textField.translatesAutoresizingMaskIntoConstraints = false
             textField.backgroundColor = .systemBackground
+            textField.font = UIFont.systemFont(ofSize: 14)
             customViewController.view.addSubview(textField)
 
             textView.text = messageField.placeholder
             textView.translatesAutoresizingMaskIntoConstraints = false
-            textField.backgroundColor = .systemBackground
+            textView.backgroundColor = .systemBackground
+            textView.font = UIFont.systemFont(ofSize: 14)
             customViewController.view.addSubview(textView)
 
             // Add constraints for the text field
@@ -137,7 +139,7 @@ public final class TextFieldAlertViewController: UIViewController {
             textView.leadingAnchor.constraint(equalTo: customViewController.view.leadingAnchor, constant: 1).isActive = true
             textView.trailingAnchor.constraint(equalTo: customViewController.view.trailingAnchor, constant: -1).isActive = true
             textView.topAnchor.constraint(equalTo: textField.bottomAnchor, constant: 1).isActive = true
-            textView.bottomAnchor.constraint(equalTo: customViewController.view.bottomAnchor, constant: -8).isActive = true
+            textView.bottomAnchor.constraint(equalTo: customViewController.view.bottomAnchor, constant: -1).isActive = true
         }
         
         // Добавляем пользовательский контроллер представления в UIAlertController
