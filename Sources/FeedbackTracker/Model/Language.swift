@@ -28,23 +28,23 @@ struct Localization {
         switch language {
         case .en:
             switch text{
-            case .titleSheet: return "Feedback"
-            case .quickFeedback: return "Quick Feedback"
-            case .sendToEmail: return "Send to Email"
+            case .titleSheet: return "Customer Service"
+            case .quickFeedback: return "Send a quick message"
+            case .sendToEmail: return "Contact by email"
             case .cancel: return "Cancel"
-            case .feedback: return "Send us feedback"
+            case .feedback: return "Send message"
             case .email: return "Your Email"
             case .message: return "Your Message"
             case .submit: return "Send"
             }
         case .ru:
             switch text{
-            case .titleSheet: return "Отзыв"
-            case .quickFeedback: return "Быстрая обратная связь"
-            case .sendToEmail: return "Отправить по электронной почте"
+            case .titleSheet: return "Служба поддержки"
+            case .quickFeedback: return "Отправить быстрое сообщение"
+            case .sendToEmail: return "Связться по email"
             case .cancel: return "Отмена"
-            case .feedback: return "Отправить нам отзыв"
-            case .email: return "Ваш адрес электронной почты"
+            case .feedback: return "Отправить сообщение"
+            case .email: return "Ваш Email"
             case .message: return "Ваше сообщение"
             case .submit: return "Отправить"
             }
