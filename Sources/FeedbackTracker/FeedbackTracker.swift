@@ -32,6 +32,7 @@ struct FeedbackModifier: ViewModifier {
                         .default(Text(Localization.text(.sendToEmail, language: language)), action: {
                             openMail()
                         }),
+                        
                         .cancel(Text(Localization.text(.cancel, language: language)))
                     ])
                 }
@@ -137,7 +138,8 @@ struct FeedbackAlertView: View {
                             .padding(.vertical, 15)
                             .contentShape(Rectangle())
                         }
-                        .disabled(email.contains("@") && !message.isEmpty ? false : true)
+                          .disabled(!message.isEmpty ? false : true)
+                       // .disabled(email.contains("@") && !message.isEmpty ? false : true)
                     }
                 }
                 .frame(width: UIScreen.main.bounds.width / 1.4)
