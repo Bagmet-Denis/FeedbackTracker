@@ -38,22 +38,22 @@ struct FeedbackModifier: ViewModifier {
                 }
             
             
-            if showAlert{
-                FeedbackAlertView(
-                    isPresented: $showAlert,
-                    emailPlaceholder: Localization.text(.email, language: language),
-                    email: $feedbackRepository.email,
-                    messagePlaceholder: Localization.text(.message, language: language),
-                    message: $feedbackRepository.message,
-                    title: Localization.text(.feedback, language: language)
-                ){
-                    Task{
-                        await feedbackRepository.sendFeedback(urlPath: urlServer)
-                    }
-                    
-                    showAlert = false
-                }
-            }
+//            if showAlert{
+//                FeedbackAlertView(
+//                    isPresented: $showAlert,
+//                    emailPlaceholder: Localization.text(.email, language: language),
+//                    email: $feedbackRepository.email,
+//                    messagePlaceholder: Localization.text(.message, language: language),
+//                    message: $feedbackRepository.message,
+//                    title: Localization.text(.feedback, language: language)
+//                ){
+//                    Task{
+//                        await feedbackRepository.sendFeedback(urlPath: urlServer)
+//                    }
+//                    
+//                    showAlert = false
+//                }
+//            }
         }
     }
     
