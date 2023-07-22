@@ -22,38 +22,44 @@ struct FeedbackModifier: ViewModifier {
     func body(content: Content) -> some View {
         ZStack{
             content
-                .actionSheet(isPresented: $isPresented) {
-                    ActionSheet(title: Text(Localization.text(.titleSheet, language: language)), buttons: [
-                        .default(Text(Localization.text(.quickFeedback, language: language)), action: {
-                            feedbackRepository.email.removeAll()
-                            feedbackRepository.message.removeAll()
-                            showAlert = true
-                        }),
-                        .default(Text(Localization.text(.sendToEmail, language: language)), action: {
-                            openMail()
-                        }),
-                        
-                        .cancel(Text(Localization.text(.cancel, language: language)))
-                    ])
+            
+            VStack{
+                Spacer()
+                
+                Color.clear
+                    .frame(height: 1)
+                    .actionSheet(isPresented: $isPresented) {
+                        ActionSheet(title: Text(Localization.text(.titleSheet, language: language)), buttons: [
+                            .default(Text(Localization.text(.quickFeedback, language: language)), action: {
+                                feedbackRepository.email.removeAll()
+                                feedbackRepository.message.removeAll()
+                                showAlert = true
+                            }),
+                            .default(Text(Localization.text(.sendToEmail, language: language)), action: {
+                                openMail()
+                            }),
+                            
+                            .cancel(Text(Localization.text(.cancel, language: language)))
+                        ])
+                    }
+            }
+            
+            if showAlert{
+                FeedbackAlertView(
+                    isPresented: $showAlert,
+                    emailPlaceholder: Localization.text(.email, language: language),
+                    email: $feedbackRepository.email,
+                    messagePlaceholder: Localization.text(.message, language: language),
+                    message: $feedbackRepository.message,
+                    title: Localization.text(.feedback, language: language)
+                ){
+                    Task{
+                        await feedbackRepository.sendFeedback(urlPath: urlServer)
+                    }
+                    
+                    showAlert = false
                 }
-            
-            
-//            if showAlert{
-//                FeedbackAlertView(
-//                    isPresented: $showAlert,
-//                    emailPlaceholder: Localization.text(.email, language: language),
-//                    email: $feedbackRepository.email,
-//                    messagePlaceholder: Localization.text(.message, language: language),
-//                    message: $feedbackRepository.message,
-//                    title: Localization.text(.feedback, language: language)
-//                ){
-//                    Task{
-//                        await feedbackRepository.sendFeedback(urlPath: urlServer)
-//                    }
-//                    
-//                    showAlert = false
-//                }
-//            }
+            }
         }
     }
     
