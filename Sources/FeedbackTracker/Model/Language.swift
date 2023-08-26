@@ -33,7 +33,7 @@ struct Localization {
             case .sendToEmail: return "Contact by email"
             case .cancel: return "Cancel"
             case .feedback: return "Send message"
-            case .email: return "Your Email (optional)"
+            case .email: return "Your Email (if an answer is required)"
             case .message: return "Your Message"
             case .submit: return "Send"
             }
@@ -44,7 +44,7 @@ struct Localization {
             case .sendToEmail: return "Связться по email"
             case .cancel: return "Отмена"
             case .feedback: return "Отправить сообщение"
-            case .email: return "Ваш Email (необязательно)"
+            case .email: return "Ваш Email (если требуется ответ)"
             case .message: return "Ваше сообщение"
             case .submit: return "Отправить"
             }
