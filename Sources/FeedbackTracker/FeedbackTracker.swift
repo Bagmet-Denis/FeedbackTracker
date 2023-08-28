@@ -19,6 +19,7 @@ struct FeedbackModifier: ViewModifier {
     let urlServer: String
     
     @State var showAlert: Bool = false
+    @State var showToastSuccessfulCopy: Bool = false
     
     func body(content: Content) -> some View {
         ZStack{
@@ -41,6 +42,7 @@ struct FeedbackModifier: ViewModifier {
                             }),
                             .default(Text(Localization.text(.copyEmail, language: language)), action: {
                                 UIPasteboard.general.string = emailSupport
+                                showToastSuccessfulCopy = true
                             }),
                             .cancel(Text(Localization.text(.cancel, language: language)))
                         ])
@@ -60,11 +62,22 @@ struct FeedbackModifier: ViewModifier {
                     },
                     language: language)
             }
+            
+            CustomToastSuccessfullyCopied(language: language)
+                .animation(.easeInOut(duration: 1), value: showToastSuccessfulCopy)
+                .offset(y: showToastSuccessfulCopy ? 10 : -UIScreen.main.bounds.height)
+                .onChange(of: showToastSuccessfulCopy) { _ in
+                    if showToastSuccessfulCopy{
+                        DispatchQueue.main.asyncAfter(deadline: .now() + 2){
+                            showToastSuccessfulCopy = false
+                        }
+                    }
+                }
         }
     }
     
     func openMail() {
-        if let url = URL(string: "mailto:info@appbox.pw"),
+        if let url = URL(string: emailSupport),
            UIApplication.shared.canOpenURL(url)
         {
             UIApplication.shared.open(url, options: [:], completionHandler: nil)
@@ -85,7 +98,7 @@ struct FeedbackAlertView: View {
     var action: ()->Void
     
     let language: Language
-    
+
     var body: some View {
         ZStack {
             if isPresented {
@@ -209,5 +222,16 @@ struct CustomFeedbackTextEditor: View {
         }.onDisappear() {
             UITextView.appearance().backgroundColor = nil
         }
+    }
+}
+
+struct CustomToastSuccessfullyCopied: View{
+    let language: Language
+    var body: some View{
+        Text(Localization.text(.successfulCopied, language: language))
+            .padding()
+            .background(Color.white)
+            .clipShape(Capsule())
+            .shadow(radius: 5)
     }
 }
