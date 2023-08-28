@@ -39,15 +39,23 @@ struct FeedbackModifier: ViewModifier {
                                 openMail()
                             }),
                             
-                            .cancel(Text(Localization.text(.cancel, language: language)))
+                                .cancel(Text(Localization.text(.cancel, language: language)))
                         ])
                     }
             }
             
             if showAlert{
-                FeedbackAlertView(isPresented: $showAlert, email: $feedbackRepository.email, message: $feedbackRepository.message, title: Localization.text(.feedback, language: language), action: {
-                    Task{await feedbackRepository.sendFeedback(urlPath: urlServer)}
-                }, language: language)
+                FeedbackAlertView(
+                    isPresented: $showAlert,
+                    email: $feedbackRepository.email,
+                    message: $feedbackRepository.message,
+                    emailPlaceholder: Localization.text(.email, language: language),
+                    messagePlaceholder: Localization.text(.message, language: language),
+                    title: Localization.text(.feedback, language: language),
+                    action: {
+                        Task{await feedbackRepository.sendFeedback(urlPath: urlServer)}
+                    },
+                    language: language)
             }
         }
     }
@@ -127,7 +135,7 @@ struct FeedbackAlertView: View {
                             HStack{
                                 Spacer(minLength: 0)
                                 
-                                Text(Localization.text(.sendToEmail, language: language))
+                                Text(Localization.text(.submit, language: language))
                                 
                                 Spacer(minLength: 0)
                             }
@@ -135,8 +143,8 @@ struct FeedbackAlertView: View {
                             .contentShape(Rectangle())
                         }
                         .disabled(message.isEmpty)
-//                          .disabled(!message.isEmpty ? false : true)
-                       // .disabled(email.contains("@") && !message.isEmpty ? false : true)
+                        //                          .disabled(!message.isEmpty ? false : true)
+                        // .disabled(email.contains("@") && !message.isEmpty ? false : true)
                     }
                 }
                 .frame(width: UIScreen.main.bounds.width / 1.4)
@@ -171,7 +179,7 @@ struct CustomFeedbackTextEditor: View {
                 .background(Color.white)
                 .cornerRadius(5)
                 .opacity(text.isEmpty ? 0.1 : 1)
-                
+            
         }
         .background(Color.white)
         .onAppear() {
