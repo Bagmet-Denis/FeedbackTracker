@@ -98,6 +98,10 @@ struct FeedbackAlertView: View {
                     
                     Divider()
                     
+                    Text(emailPlaceholder)
+                        .font(.caption)
+                        .foregroundColor(.gray)
+                    
                     TextField(emailPlaceholder, text: $email)
                         .disableAutocorrection(true)
                         .textFieldStyle(.plain)
@@ -106,6 +110,10 @@ struct FeedbackAlertView: View {
                         .background(Color.white)
                     
                     Divider()
+                    
+                    Text(messagePlaceholder)
+                        .font(.caption)
+                        .foregroundColor(.gray)
                     
                     CustomFeedbackTextEditor(placeholder: messagePlaceholder, text: $message)
                     
@@ -168,7 +176,6 @@ struct CustomFeedbackTextEditor: View {
         ZStack(alignment: .topLeading) {
             if text.isEmpty  {
                 Text(placeholder)
-                    .font(.caption)
                     .foregroundColor(Color.primary.opacity(0.25))
                     .padding(EdgeInsets(top: 7, leading: 4, bottom: 0, trailing: 0))
                     .padding(internalPadding)
