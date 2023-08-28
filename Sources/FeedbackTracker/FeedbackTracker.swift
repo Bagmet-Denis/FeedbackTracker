@@ -102,6 +102,7 @@ struct FeedbackAlertView: View {
                         .font(.caption)
                         .foregroundColor(.gray)
                         .padding(5)
+                        .padding(.top, 10)
                     
                     TextField(emailPlaceholder, text: $email)
                         .disableAutocorrection(true)
@@ -116,6 +117,7 @@ struct FeedbackAlertView: View {
                         .font(.caption)
                         .foregroundColor(.gray)
                         .padding(5)
+                        .padding(.top, 10)
                     
                     CustomFeedbackTextEditor(placeholder: messagePlaceholder, text: $message)
                     
