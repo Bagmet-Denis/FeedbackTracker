@@ -22,7 +22,7 @@ struct FeedbackModifier: ViewModifier {
     @State var showToastSuccessfulCopy: Bool = false
     
     func body(content: Content) -> some View {
-        ZStack{
+        ZStack(alignment: Alignment(horizontal: .center, vertical: .top)){
             content
             
             VStack{
