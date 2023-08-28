@@ -21,6 +21,7 @@ enum LanguageStr {
     case email
     case message
     case submit
+    case copyEmail
 }
 
 struct Localization {
@@ -36,6 +37,7 @@ struct Localization {
             case .email: return "Your Email (if an answer is required)"
             case .message: return "Your Message"
             case .submit: return "Send"
+            case .copyEmail: return "Copy Email"
             }
         case .ru:
             switch text{
@@ -47,6 +49,7 @@ struct Localization {
             case .email: return "Ваш Email (если требуется ответ)"
             case .message: return "Ваше сообщение"
             case .submit: return "Отправить"
+            case .copyEmail: return "Скопировать Email"
             }
         }
     }

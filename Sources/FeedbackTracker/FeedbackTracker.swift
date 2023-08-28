@@ -5,8 +5,8 @@ import SwiftUI
 import MessageUI
 
 public extension View {
-    func addFeedback(isPresented: Binding<Bool>, language: Language, urlServer: String) -> some View{
-        modifier(FeedbackModifier(isPresented: isPresented, language: language, urlServer: urlServer))
+    func addFeedback(isPresented: Binding<Bool>, language: Language, emailSupport: String, urlServer: String) -> some View{
+        modifier(FeedbackModifier(isPresented: isPresented, language: language, emailSupport: emailSupport, urlServer: urlServer))
             .preferredColorScheme(.light)
     }
 }
@@ -15,6 +15,7 @@ struct FeedbackModifier: ViewModifier {
     @StateObject var feedbackRepository = FeedbackRepository()
     @Binding var isPresented: Bool
     let language: Language
+    let emailSupport: String
     let urlServer: String
     
     @State var showAlert: Bool = false
@@ -38,8 +39,10 @@ struct FeedbackModifier: ViewModifier {
                             .default(Text(Localization.text(.sendToEmail, language: language)), action: {
                                 openMail()
                             }),
-                            
-                                .cancel(Text(Localization.text(.cancel, language: language)))
+                            .default(Text(Localization.text(.copyEmail, language: language)), action: {
+                                UIPasteboard.general.string = emailSupport
+                            }),
+                            .cancel(Text(Localization.text(.cancel, language: language)))
                         ])
                     }
             }
@@ -92,9 +95,16 @@ struct FeedbackAlertView: View {
                     }
                 
                 VStack(alignment: .leading, spacing: 0) {
-                    Text(title)
-                        .font(.system(size: 18, weight: .bold))
-                        .padding()
+                    HStack{
+                        
+                        Spacer()
+                        
+                        Text(title)
+                            .font(.system(size: 18, weight: .bold))
+                            .padding()
+                        
+                        Spacer()
+                    }
                     
                     Divider()
                     
