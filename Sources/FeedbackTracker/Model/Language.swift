@@ -28,10 +28,10 @@ struct Localization {
         switch language {
         case .en:
             switch text{
+            case .cancel: return "Cancel"
             case .titleSheet: return "Customer Service"
             case .quickFeedback: return "Send a quick message"
             case .sendToEmail: return "Contact by email"
-            case .cancel: return "Cancel"
             case .feedback: return "Send message"
             case .email: return "Your Email (if an answer is required)"
             case .message: return "Your Message"
@@ -39,10 +39,10 @@ struct Localization {
             }
         case .ru:
             switch text{
+            case .cancel: return "Отмена"
             case .titleSheet: return "Служба поддержки"
             case .quickFeedback: return "Отправить быстрое сообщение"
             case .sendToEmail: return "Связться по email"
-            case .cancel: return "Отмена"
             case .feedback: return "Отправить сообщение"
             case .email: return "Ваш Email (если требуется ответ)"
             case .message: return "Ваше сообщение"

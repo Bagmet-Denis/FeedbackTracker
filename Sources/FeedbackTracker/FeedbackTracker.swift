@@ -45,20 +45,9 @@ struct FeedbackModifier: ViewModifier {
             }
             
             if showAlert{
-                FeedbackAlertView(
-                    isPresented: $showAlert,
-                    emailPlaceholder: Localization.text(.email, language: language),
-                    email: $feedbackRepository.email,
-                    messagePlaceholder: Localization.text(.message, language: language),
-                    message: $feedbackRepository.message,
-                    title: Localization.text(.feedback, language: language)
-                ){
-                    Task{
-                        await feedbackRepository.sendFeedback(urlPath: urlServer)
-                    }
-                    
-                    showAlert = false
-                }
+                FeedbackAlertView(isPresented: $showAlert, email: $feedbackRepository.email, message: $feedbackRepository.message, title: Localization.text(.feedback, language: language), action: {
+                    Task{await feedbackRepository.sendFeedback(urlPath: urlServer)}
+                }, language: language)
             }
         }
     }
@@ -74,16 +63,17 @@ struct FeedbackModifier: ViewModifier {
 
 struct FeedbackAlertView: View {
     @Binding var isPresented: Bool
-    
-    var emailPlaceholder: String = ""
     @Binding var email: String
-    
-    var messagePlaceholder: String = ""
     @Binding var message: String
     
-    let title: String
+    var emailPlaceholder: String = ""
+    var messagePlaceholder: String = ""
     
+    
+    let title: String
     var action: ()->Void
+    
+    let language: Language
     
     var body: some View {
         ZStack {
@@ -120,7 +110,7 @@ struct FeedbackAlertView: View {
                             HStack{
                                 Spacer(minLength: 0)
                                 
-                                Text("Отмена")
+                                Text(Localization.text(.cancel, language: language))
                                 
                                 Spacer(minLength: 0)
                             }
@@ -137,14 +127,15 @@ struct FeedbackAlertView: View {
                             HStack{
                                 Spacer(minLength: 0)
                                 
-                                Text("Отправить")
+                                Text(Localization.text(.sendToEmail, language: language))
                                 
                                 Spacer(minLength: 0)
                             }
                             .padding(.vertical, 15)
                             .contentShape(Rectangle())
                         }
-                          .disabled(!message.isEmpty ? false : true)
+                        .disabled(message.isEmpty)
+//                          .disabled(!message.isEmpty ? false : true)
                        // .disabled(email.contains("@") && !message.isEmpty ? false : true)
                     }
                 }
