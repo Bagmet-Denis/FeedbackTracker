@@ -91,7 +91,7 @@ struct FeedbackAlertView: View {
                         isPresented = false
                     }
                 
-                VStack(spacing: 0) {
+                VStack(alignment: .leading, spacing: 0) {
                     Text(title)
                         .font(.system(size: 18, weight: .bold))
                         .padding()
@@ -101,6 +101,7 @@ struct FeedbackAlertView: View {
                     Text(emailPlaceholder)
                         .font(.caption)
                         .foregroundColor(.gray)
+                        .padding(5)
                     
                     TextField(emailPlaceholder, text: $email)
                         .disableAutocorrection(true)
@@ -114,6 +115,7 @@ struct FeedbackAlertView: View {
                     Text(messagePlaceholder)
                         .font(.caption)
                         .foregroundColor(.gray)
+                        .padding(5)
                     
                     CustomFeedbackTextEditor(placeholder: messagePlaceholder, text: $message)
                     
