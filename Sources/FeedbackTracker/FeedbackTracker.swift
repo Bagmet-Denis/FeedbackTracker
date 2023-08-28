@@ -168,6 +168,7 @@ struct CustomFeedbackTextEditor: View {
         ZStack(alignment: .topLeading) {
             if text.isEmpty  {
                 Text(placeholder)
+                    .font(.caption)
                     .foregroundColor(Color.primary.opacity(0.25))
                     .padding(EdgeInsets(top: 7, leading: 4, bottom: 0, trailing: 0))
                     .padding(internalPadding)
