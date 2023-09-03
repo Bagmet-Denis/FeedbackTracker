@@ -23,6 +23,8 @@ enum LanguageStr {
     case submit
     case copyEmail
     case successfulCopied
+    case emailTitle
+    case messageTitle
 }
 
 struct Localization {
@@ -36,7 +38,9 @@ struct Localization {
             case .sendToEmail: return "Contact by email"
             case .feedback: return "Send message"
             case .email: return "Your Email (if an answer is required)"
+            case .emailTitle: return "Your Email"
             case .message: return "Your Message"
+            case .messageTitle: return "Your Message"
             case .submit: return "Send"
             case .copyEmail: return "Copy Email"
             case .successfulCopied: return "Email copied to clipboard"
@@ -49,7 +53,9 @@ struct Localization {
             case .sendToEmail: return "Связться по email"
             case .feedback: return "Отправить сообщение"
             case .email: return "Ваш Email (если требуется ответ)"
+            case .emailTitle: return "Your Email"
             case .message: return "Ваше сообщение"
+            case .messageTitle: return "Your Message"
             case .submit: return "Отправить"
             case .copyEmail: return "Скопировать Email"
             case .successfulCopied: return "Email copied to clipboard"

@@ -121,7 +121,7 @@ struct FeedbackAlertView: View {
                     
                     Divider()
                     
-                    Text(emailPlaceholder)
+                    Localization.text(.emailTitle, language: language)
                         .font(.caption)
                         .fontWeight(.bold)
                         .foregroundColor(.gray)
@@ -136,7 +136,7 @@ struct FeedbackAlertView: View {
                     
                     Divider()
                     
-                    Text(messagePlaceholder)
+                    Localization.text(.messageTitle, language: language)
                         .font(.caption)
                         .fontWeight(.bold)
                         .foregroundColor(.gray)
