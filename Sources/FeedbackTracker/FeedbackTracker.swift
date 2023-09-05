@@ -64,9 +64,9 @@ struct FeedbackModifier: ViewModifier {
             }
             
             CustomToastSuccessfullyCopied(language: language)
-                .offset(y: showToastSuccessfulCopy ? 10 : -UIScreen.main.bounds.height)
-                .opacity(showToastSuccessfulCopy ? 1 : 0)
-                .animation(.easeInOut(duration: 1), value: showToastSuccessfulCopy)
+//                .offset(y: showToastSuccessfulCopy ? 10 : -UIScreen.main.bounds.height)
+//                .opacity(showToastSuccessfulCopy ? 1 : 0)
+//                .animation(.easeInOut(duration: 1), value: showToastSuccessfulCopy)
                 .onChange(of: showToastSuccessfulCopy) { _ in
                     if showToastSuccessfulCopy{
                         DispatchQueue.main.asyncAfter(deadline: .now() + 2){
