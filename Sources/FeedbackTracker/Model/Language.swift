@@ -58,7 +58,7 @@ struct Localization {
             case .messageTitle: return "Сообщение:"
             case .submit: return "Отправить"
             case .copyEmail: return "Скопировать Email"
-            case .successfulCopied: return "Email copied to clipboard"
+            case .successfulCopied: return "Email скопирован в буфер обмена"
             }
         }
     }
