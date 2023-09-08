@@ -20,6 +20,7 @@ struct FeedbackModifier: ViewModifier {
     
     @State var showAlert: Bool = false
     @State var showToastSuccessfulCopy: Bool = false
+    @State var showToastSuccessfulSendReport: Bool = false
     
     func body(content: Content) -> some View {
         ZStack(alignment: Alignment(horizontal: .center, vertical: .top)){
@@ -59,9 +60,24 @@ struct FeedbackModifier: ViewModifier {
                     title: Localization.text(.feedback, language: language),
                     action: {
                         Task{await feedbackRepository.sendFeedback(urlPath: urlServer)}
+                        
+                        showAlert = false
+                        showToastSuccessfulSendReport = true
                     },
                     language: language)
             }
+            
+            CustomToastSuccessfullySendReport(language: language)
+                .offset(y: showToastSuccessfulSendReport ? 10 : -UIScreen.main.bounds.height * 2)
+                .opacity(showToastSuccessfulSendReport ? 1 : 0)
+                .animation(.easeInOut(duration: 0.8), value: showToastSuccessfulSendReport)
+                .onChange(of: showToastSuccessfulSendReport) { _ in
+                    if showToastSuccessfulSendReport{
+                        DispatchQueue.main.asyncAfter(deadline: .now() + 2){
+                            showToastSuccessfulSendReport = false
+                        }
+                    }
+                }
             
             CustomToastSuccessfullyCopied(language: language)
                 .offset(y: showToastSuccessfulCopy ? 10 : -UIScreen.main.bounds.height * 2)
@@ -230,6 +246,17 @@ struct CustomToastSuccessfullyCopied: View{
     let language: Language
     var body: some View{
         Text(Localization.text(.successfulCopied, language: language))
+            .padding()
+            .background(Color.white)
+            .clipShape(Capsule())
+            .shadow(radius: 5)
+    }
+}
+
+struct CustomToastSuccessfullySendReport: View{
+    let language: Language
+    var body: some View{
+        Text(Localization.text(.successfulSendReport, language: language))
             .padding()
             .background(Color.white)
             .clipShape(Capsule())
