@@ -45,7 +45,7 @@ struct Localization {
             case .submit: return "Send"
             case .copyEmail: return "Copy Email"
             case .successfulCopied: return "Email copied to clipboard"
-            case .successfulSendReport: return "What what what"
+            case .successfulSendReport: return "Your message has been successfully sent. Thank you!"
             }
         case .ru:
             switch text{
@@ -61,7 +61,7 @@ struct Localization {
             case .submit: return "Отправить"
             case .copyEmail: return "Скопировать Email"
             case .successfulCopied: return "Email скопирован в буфер обмена"
-            case .successfulSendReport: return "What what what"
+            case .successfulSendReport: return "Ваше сообщение успешно отправлено. Спасибо!"
             }
         }
     }
