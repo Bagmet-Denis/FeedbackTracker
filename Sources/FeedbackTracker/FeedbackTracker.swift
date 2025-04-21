@@ -149,7 +149,7 @@ struct FeedbackAlertView: View {
                         .textFieldStyle(.plain)
                         .frame(height: 40)
                         .padding(.horizontal, 9)
-                        .background(Color.white)
+//                        .background(Color.white)
                     
                     Divider()
                     
@@ -228,7 +228,7 @@ struct CustomFeedbackTextEditor: View {
             TextEditor(text: $text)
                 .padding(internalPadding)
                 .frame(height: UIScreen.main.bounds.height / 7)
-                .background(Color.white)
+//                .background(Color.white)
                 .cornerRadius(5)
                 .opacity(text.isEmpty ? 0.1 : 1)
             
