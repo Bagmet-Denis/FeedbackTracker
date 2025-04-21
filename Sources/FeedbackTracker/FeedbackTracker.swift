@@ -119,7 +119,7 @@ struct FeedbackAlertView: View {
     var body: some View {
         ZStack {
             if isPresented {
-                Color.gray.opacity(0.5).edgesIgnoringSafeArea(.all)
+                Color.black.opacity(0.5).edgesIgnoringSafeArea(.all)
                     .onTapGesture {
                         isPresented = false
                     }
@@ -143,7 +143,6 @@ struct FeedbackAlertView: View {
                         .textFieldStyle(.plain)
                         .frame(height: 40)
                         .padding(.horizontal, 9)
-//                        .background(Color.white)
                     
                     Divider()
                     
@@ -217,10 +216,11 @@ struct CustomFeedbackTextEditor: View {
         }
         .background(Color.white)
         .onAppear() {
-            UITextView.appearance().backgroundColor = .clear
-        }.onDisappear() {
-            UITextView.appearance().backgroundColor = nil
+            UITextView.appearance().backgroundColor = .yellow
         }
+//        .onDisappear() {
+//            UITextView.appearance().backgroundColor = nil
+//        }
     }
 }
 
