@@ -7,7 +7,7 @@ import MessageUI
 public extension View {
     func addFeedback(isPresented: Binding<Bool>, language: Language, emailSupport: String, urlServer: String) -> some View{
         modifier(FeedbackModifier(isPresented: isPresented, language: language, emailSupport: emailSupport, urlServer: urlServer))
-            .preferredColorScheme(.light)
+            .preferredColorScheme(.dark)
     }
 }
 
