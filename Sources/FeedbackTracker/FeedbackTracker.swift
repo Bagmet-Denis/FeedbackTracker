@@ -119,22 +119,16 @@ struct FeedbackAlertView: View {
     var body: some View {
         ZStack {
             if isPresented {
-                Color.gray.opacity(0.3).edgesIgnoringSafeArea(.all)
+                Color.gray.opacity(0.5).edgesIgnoringSafeArea(.all)
                     .onTapGesture {
                         isPresented = false
                     }
                 
                 VStack(alignment: .leading, spacing: 0) {
-                    HStack{
-                        
-                        Spacer()
-                        
-                        Text(title)
-                            .font(.system(size: 18, weight: .bold))
-                            .padding()
-                        
-                        Spacer()
-                    }
+                    Text(title)
+                        .font(.system(size: 18, weight: .bold))
+                        .padding()
+                        .frame(maxWidth: .infinity, alignment: .center)
                     
                     Divider()
                     
@@ -167,15 +161,10 @@ struct FeedbackAlertView: View {
                         Button {
                             isPresented = false
                         } label: {
-                            HStack{
-                                Spacer(minLength: 0)
-                                
-                                Text(Localization.text(.cancel, language: language))
-                                
-                                Spacer(minLength: 0)
-                            }
-                            .padding(.vertical, 15)
-                            .contentShape(Rectangle())
+                            Text(Localization.text(.cancel, language: language))
+                            .padding(.vertical, 14)
+                            .contentShape(.rect)
+                            .frame(maxWidth: .infinity, alignment: .center)
                         }
                         
                         Divider()
@@ -184,24 +173,17 @@ struct FeedbackAlertView: View {
                         Button {
                             action()
                         } label: {
-                            HStack{
-                                Spacer(minLength: 0)
-                                
-                                Text(Localization.text(.submit, language: language))
-                                
-                                Spacer(minLength: 0)
-                            }
-                            .padding(.vertical, 15)
-                            .contentShape(Rectangle())
+                            Text(Localization.text(.submit, language: language))
+                            .padding(.vertical, 14)
+                            .contentShape(.rect)
+                            .frame(maxWidth: .infinity, alignment: .center)
                         }
                         .disabled(message.isEmpty)
-                        //                          .disabled(!message.isEmpty ? false : true)
-                        // .disabled(email.contains("@") && !message.isEmpty ? false : true)
                     }
                 }
                 .frame(width: UIScreen.main.bounds.width / 1.4)
-                .background(Color(UIColor.systemGray6))
-                .cornerRadius(15)
+                .background(Color(hex: "272727"))
+                .cornerRadius(16)
                 .onAppear {
                     UITextView.appearance().backgroundColor = .clear
                 }
@@ -228,7 +210,7 @@ struct CustomFeedbackTextEditor: View {
             TextEditor(text: $text)
                 .padding(internalPadding)
                 .frame(height: UIScreen.main.bounds.height / 7)
-//                .background(Color.white)
+                .background(Color(hex: "272727"))
                 .cornerRadius(5)
                 .opacity(text.isEmpty ? 0.1 : 1)
             
