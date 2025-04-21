@@ -134,7 +134,7 @@ struct FeedbackAlertView: View {
                     
                     Text(Localization.text(.emailTitle, language: language))
                         .font(.caption)
-                        .fontWeight(.bold)
+                        .fontWeight(.regular)
                         .foregroundColor(.gray)
                         .padding(10)
                     
@@ -148,7 +148,7 @@ struct FeedbackAlertView: View {
                     
                     Text(Localization.text(.messageTitle, language: language))
                         .font(.caption)
-                        .fontWeight(.bold)
+                        .fontWeight(.regular)
                         .foregroundColor(.gray)
                         .padding(10)
                     
@@ -206,22 +206,33 @@ struct CustomFeedbackTextEditor: View {
                     .padding(internalPadding)
             }
             
-            TextEditor(text: $text)
-                .padding(internalPadding)
-                .frame(height: UIScreen.main.bounds.height / 7)
-                .background(Color(hex: "272727"))
-                .cornerRadius(5)
-                .opacity(text.isEmpty ? 0.1 : 1)
+            if #available(iOS 16.0, *) {
+                TextEditor(text: $text)
+                    .padding(internalPadding)
+                    .frame(height: UIScreen.main.bounds.height / 7)
+                    .scrollContentBackground(.hidden)
+                    .cornerRadius(5)
+                    .opacity(text.isEmpty ? 0.1 : 1)
+            } else {
+                TextEditor(text: $text)
+                    .padding(internalPadding)
+                    .frame(height: UIScreen.main.bounds.height / 7)
+                    .cornerRadius(5)
+                    .opacity(text.isEmpty ? 0.1 : 1)
+            }
             
         }
-        .background(Color.white)
         .onAppear() {
-            UITextView.appearance().backgroundColor = .yellow
+            UITextView.appearance().backgroundColor = .clear
         }
-//        .onDisappear() {
-//            UITextView.appearance().backgroundColor = nil
-//        }
     }
+}
+
+#Preview{
+    FeedbackAlertView(isPresented: .constant(true), email: .constant("Test"), message: .constant("Test"), emailPlaceholder: "Test", messagePlaceholder: "Test", title: "Test", action: {
+        
+    }, language: .en)
+    .preferredColorScheme(.dark)
 }
 
 struct CustomToastSuccessfullyCopied: View{
