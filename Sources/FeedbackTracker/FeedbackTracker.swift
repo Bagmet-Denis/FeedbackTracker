@@ -5,9 +5,13 @@ import SwiftUI
 import MessageUI
 
 public extension View {
-    func addFeedback(isPresented: Binding<Bool>, language: Language, emailSupport: String, urlServer: String) -> some View{
-        modifier(FeedbackModifier(isPresented: isPresented, language: language, emailSupport: emailSupport, urlServer: urlServer))
-            .preferredColorScheme(.dark)
+    func addFeedback(isPresented: Binding<Bool>, language: Language, colorTheme: ColorTheme, emailSupport: String, urlServer: String) -> some View{
+        modifier(FeedbackModifier(
+            isPresented: isPresented,
+            language: language,
+            theme: colorTheme, emailSupport: emailSupport,
+            urlServer: urlServer
+        ))
     }
 }
 
@@ -15,6 +19,7 @@ struct FeedbackModifier: ViewModifier {
     @StateObject var feedbackRepository = FeedbackRepository()
     @Binding var isPresented: Bool
     let language: Language
+    let theme: ColorTheme
     let emailSupport: String
     let urlServer: String
     
@@ -64,6 +69,7 @@ struct FeedbackModifier: ViewModifier {
                         showAlert = false
                         showToastSuccessfulSendReport = true
                     },
+                    theme: theme,
                     language: language)
             }
             
@@ -79,7 +85,7 @@ struct FeedbackModifier: ViewModifier {
                     }
                 }
             
-            CustomToastSuccessfullyCopied(language: language)
+            CustomToastSuccessfullyCopied(language: language, theme: theme)
                 .offset(y: showToastSuccessfulCopy ? 10 : -UIScreen.main.bounds.height * 2)
                 .opacity(showToastSuccessfulCopy ? 1 : 0)
                 .animation(.easeInOut(duration: 0.8), value: showToastSuccessfulCopy)
@@ -114,6 +120,7 @@ struct FeedbackAlertView: View {
     let title: String
     var action: ()->Void
     
+    let theme: ColorTheme
     let language: Language
 
     var body: some View {
@@ -127,8 +134,10 @@ struct FeedbackAlertView: View {
                 VStack(alignment: .leading, spacing: 0) {
                     Text(title)
                         .font(.system(size: 18, weight: .bold))
+                        .foregroundColor(theme == .light ? Color.black : Color.white)
                         .padding()
                         .frame(maxWidth: .infinity, alignment: .center)
+                        .opacity(0.8)
                     
                     Divider()
                     
@@ -140,6 +149,7 @@ struct FeedbackAlertView: View {
                     
                     TextField(emailPlaceholder, text: $email)
                         .disableAutocorrection(true)
+                        .foregroundStyle(theme == .light ? Color.black.opacity(0.8) : Color.white.opacity(0.8))
                         .textFieldStyle(.plain)
                         .frame(height: 40)
                         .padding(.horizontal, 9)
@@ -152,7 +162,7 @@ struct FeedbackAlertView: View {
                         .foregroundColor(.gray)
                         .padding(10)
                     
-                    CustomFeedbackTextEditor(placeholder: messagePlaceholder, text: $message)
+                    CustomFeedbackTextEditor(placeholder: messagePlaceholder, text: $message, theme: theme)
                     
                     Divider()
                     
@@ -181,7 +191,7 @@ struct FeedbackAlertView: View {
                     }
                 }
                 .frame(width: UIScreen.main.bounds.width / 1.4)
-                .background(Color(hex: "272727"))
+                .background(theme == .light ? Color(hex: "F0F1F1") : Color(hex: "272727"))
                 .cornerRadius(16)
                 .onAppear {
                     UITextView.appearance().backgroundColor = .clear
@@ -195,6 +205,7 @@ struct CustomFeedbackTextEditor: View {
     var placeholder: String = "Denis"
     @Binding var text: String
     
+    let theme: ColorTheme
     let internalPadding: CGFloat = 5
     
     var body: some View {
@@ -208,6 +219,7 @@ struct CustomFeedbackTextEditor: View {
             
             if #available(iOS 16.0, *) {
                 TextEditor(text: $text)
+                    .foregroundStyle(theme == .light ? Color.black.opacity(0.8) : Color.white.opacity(0.8))
                     .padding(internalPadding)
                     .frame(height: UIScreen.main.bounds.height / 7)
                     .scrollContentBackground(.hidden)
@@ -215,6 +227,7 @@ struct CustomFeedbackTextEditor: View {
                     .opacity(text.isEmpty ? 0.1 : 1)
             } else {
                 TextEditor(text: $text)
+                    .foregroundStyle(theme == .light ? Color.black.opacity(0.8) : Color.white.opacity(0.8))
                     .padding(internalPadding)
                     .frame(height: UIScreen.main.bounds.height / 7)
                     .cornerRadius(5)
@@ -231,16 +244,20 @@ struct CustomFeedbackTextEditor: View {
 #Preview{
     FeedbackAlertView(isPresented: .constant(true), email: .constant("Test"), message: .constant("Test"), emailPlaceholder: "Test", messagePlaceholder: "Test", title: "Test", action: {
         
-    }, language: .en)
+    }, theme: .dark, language: .en)
     .preferredColorScheme(.dark)
+    
+    CustomToastSuccessfullyCopied(language: .en, theme: .light)
 }
 
 struct CustomToastSuccessfullyCopied: View{
     let language: Language
+    let theme: ColorTheme
     var body: some View{
         Text(Localization.text(.successfulCopied, language: language))
             .padding()
-            .background(Color.white)
+            .foregroundColor(theme == .light ? Color.black : Color.white)
+            .background(theme == .light ? Color.white : Color(hex: "272727"))
             .clipShape(Capsule())
             .shadow(radius: 5)
     }
