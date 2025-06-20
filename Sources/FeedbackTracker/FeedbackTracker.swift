@@ -199,11 +199,16 @@ struct FeedbackAlertView: View {
             }
         }
         .toolbar {
-            ToolbarItem(placement: .keyboard) {
-                Button("", systemImage: "keyboard.chevron.compact.down") {
-                    hideKeyboard()
+            ToolbarItemGroup(placement: .keyboard) {
+                HStack {
+                    Spacer()
+                    
+                    Button {
+                        hideKeyboard()
+                    } label: {
+                        Image(systemName: "keyboard.chevron.compact.down")
+                    }
                 }
-                .frame(maxWidth: .infinity, alignment: .trailing)
             }
         }
     }
