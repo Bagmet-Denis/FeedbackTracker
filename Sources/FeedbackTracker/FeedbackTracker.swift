@@ -73,7 +73,7 @@ struct FeedbackModifier: ViewModifier {
                     language: language)
             }
             
-            CustomToastSuccessfullySendReport(language: language)
+            CustomToastSuccessfullySendReport(language: language, theme: theme)
                 .offset(y: showToastSuccessfulSendReport ? 10 : -UIScreen.main.bounds.height * 2)
                 .opacity(showToastSuccessfulSendReport ? 1 : 0)
                 .animation(.easeInOut(duration: 0.8), value: showToastSuccessfulSendReport)
@@ -198,6 +198,19 @@ struct FeedbackAlertView: View {
                 }
             }
         }
+        .toolbar {
+            ToolbarItem(placement: .keyboard) {
+                Button("", systemImage: "keyboard.chevron.compact.down") {
+                    hideKeyboard()
+                }
+                .frame(maxWidth: .infinity, alignment: .trailing)
+            }
+        }
+    }
+    
+    
+    private func hideKeyboard() {
+        UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
     }
 }
 
@@ -259,17 +272,19 @@ struct CustomToastSuccessfullyCopied: View{
             .foregroundColor(theme == .light ? Color.black : Color.white)
             .background(theme == .light ? Color.white : Color(hex: "272727"))
             .clipShape(Capsule())
-            .shadow(radius: 5)
+            .shadow(radius: theme == .light ? 5 : 0)
     }
 }
 
 struct CustomToastSuccessfullySendReport: View{
     let language: Language
+    let theme: ColorTheme
     var body: some View{
         Text(Localization.text(.successfulSendReport, language: language))
             .padding()
-            .background(Color.white)
+            .foregroundColor(theme == .light ? Color.black : Color.white)
+            .background(theme == .light ? Color.white : Color(hex: "272727"))
             .clipShape(Capsule())
-            .shadow(radius: 5)
+            .shadow(radius: theme == .light ? 5 : 0)
     }
 }
