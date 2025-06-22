@@ -56,23 +56,22 @@ struct FeedbackModifier: ViewModifier {
             }
             
             if showAlert{
-                ScrollView {
-                    FeedbackAlertView(
-                        isPresented: $showAlert,
-                        email: $feedbackRepository.email,
-                        message: $feedbackRepository.message,
-                        emailPlaceholder: Localization.text(.email, language: language),
-                        messagePlaceholder: Localization.text(.message, language: language),
-                        title: Localization.text(.feedback, language: language),
-                        action: {
-                            Task{await feedbackRepository.sendFeedback(urlPath: urlServer)}
-                            
-                            showAlert = false
-                            showToastSuccessfulSendReport = true
-                        },
-                        theme: theme,
-                        language: language)
-                }
+                FeedbackAlertView(
+                    isPresented: $showAlert,
+                    email: $feedbackRepository.email,
+                    message: $feedbackRepository.message,
+                    emailPlaceholder: Localization.text(.email, language: language),
+                    messagePlaceholder: Localization.text(.message, language: language),
+                    title: Localization.text(.feedback, language: language),
+                    action: {
+                        Task{await feedbackRepository.sendFeedback(urlPath: urlServer)}
+                        
+                        showAlert = false
+                        showToastSuccessfulSendReport = true
+                    },
+                    theme: theme,
+                    language: language
+                )
             }
             
             CustomToastSuccessfullySendReport(language: language, theme: theme)
