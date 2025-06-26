@@ -209,19 +209,25 @@ struct FeedbackAlertView: View {
                             }
                     }
                 )
-                .offset(y: shouldAdjustForKeyboard ? -calculateOffset() : 0)
+                .offset(y: shouldAdjustForKeyboard ? -keyboardHeight / 2 : 0)
                 .animation(.easeOut(duration: 0.16), value: keyboardHeight)
                 .onAppear {
                     UITextView.appearance().backgroundColor = .clear
                     
-                    if shouldAdjustForKeyboard {
-                        setupKeyboardObservers()
+                    // Подписываемся на уведомления о клавиатуре
+                    NotificationCenter.default.addObserver(forName: UIResponder.keyboardWillShowNotification, object: nil, queue: .main) { notification in
+                        guard let keyboardFrame = notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? CGRect else { return }
+                        keyboardHeight = keyboardFrame.height
+                    }
+                    
+                    NotificationCenter.default.addObserver(forName: UIResponder.keyboardWillHideNotification, object: nil, queue: .main) { _ in
+                        keyboardHeight = 0
                     }
                 }
                 .onDisappear {
-                    if shouldAdjustForKeyboard {
-                        removeKeyboardObservers()
-                    }
+                    // Отписываемся от уведомлений
+                    NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardWillShowNotification, object: nil)
+                    NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardWillHideNotification, object: nil)
                 }
             }
         }
@@ -239,16 +245,18 @@ struct FeedbackAlertView: View {
         }
     }
     
-    private func calculateOffset() -> CGFloat {
-        guard keyboardHeight > 0 else { return 0 }
-        
-        let screenHeight = UIScreen.main.bounds.height
-        let visibleSpace = screenHeight - keyboardHeight
-        let neededOffset = max(0, (alertViewHeight - visibleSpace) / 2 + 20)
-        
-        // Не поднимаем выше, чем нужно
-        return min(neededOffset, keyboardHeight)
-    }
+    //    private func calculateOffset() -> CGFloat {
+    //        return keyboardHeight
+    //
+    //        guard keyboardHeight > 0 else { return 0 }
+    //
+    //        let screenHeight = UIScreen.main.bounds.height
+    //        let visibleSpace = screenHeight - keyboardHeight
+    //        let neededOffset = max(0, (alertViewHeight - visibleSpace) / 2 + 20)
+    //
+    //        // Не поднимаем выше, чем нужно
+    //        return min(neededOffset, keyboardHeight)
+    //    }
     
     private func setupKeyboardObservers() {
         NotificationCenter.default.addObserver(forName: UIResponder.keyboardWillShowNotification, object: nil, queue: .main) { notification in
