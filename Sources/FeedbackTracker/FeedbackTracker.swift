@@ -209,7 +209,7 @@ struct FeedbackAlertView: View {
                             }
                     }
                 )
-                .offset(y: shouldAdjustForKeyboard ? -keyboardHeight / 2 : 0)
+                .offset(y: shouldAdjustForKeyboard ? -keyboardHeight / 3 : 0)
                 .animation(.easeOut(duration: 0.16), value: keyboardHeight)
                 .onAppear {
                     UITextView.appearance().backgroundColor = .clear
