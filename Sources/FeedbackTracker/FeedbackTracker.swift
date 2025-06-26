@@ -140,7 +140,63 @@ struct FeedbackAlertView: View {
                     }
                 
                 VStack(alignment: .leading, spacing: 0) {
-                    // ... остальное содержимое без изменений ...
+                    Text(title)
+                        .font(.system(size: 18, weight: .bold))
+                        .foregroundColor(theme == .light ? Color.black : Color.white)
+                        .padding()
+                        .frame(maxWidth: .infinity, alignment: .center)
+                        .opacity(0.8)
+                    
+                    Divider()
+                    
+                    Text(Localization.text(.emailTitle, language: language))
+                        .font(.caption)
+                        .fontWeight(.regular)
+                        .foregroundColor(.gray)
+                        .padding(10)
+                    
+                    TextField(emailPlaceholder, text: $email)
+                        .disableAutocorrection(true)
+                        .foregroundStyle(theme == .light ? Color.black.opacity(0.8) : Color.white.opacity(0.8))
+                        .textFieldStyle(.plain)
+                        .frame(height: 40)
+                        .padding(.horizontal, 9)
+                    
+                    Divider()
+                    
+                    Text(Localization.text(.messageTitle, language: language))
+                        .font(.caption)
+                        .fontWeight(.regular)
+                        .foregroundColor(.gray)
+                        .padding(10)
+                    
+                    CustomFeedbackTextEditor(placeholder: messagePlaceholder, text: $message, theme: theme)
+                    
+                    Divider()
+                    
+                    HStack{
+                        Button {
+                            isPresented = false
+                        } label: {
+                            Text(Localization.text(.cancel, language: language))
+                                .padding(.vertical, 14)
+                                .contentShape(.rect)
+                                .frame(maxWidth: .infinity, alignment: .center)
+                        }
+                        
+                        Divider()
+                            .frame(height: 50)
+                        
+                        Button {
+                            action()
+                        } label: {
+                            Text(Localization.text(.submit, language: language))
+                                .padding(.vertical, 14)
+                                .contentShape(.rect)
+                                .frame(maxWidth: .infinity, alignment: .center)
+                        }
+                        .disabled(message.isEmpty)
+                    }
                 }
                 .frame(width: UIScreen.main.bounds.width / 1.4)
                 .background(theme == .light ? Color(hex: "F0F1F1") : Color(hex: "272727"))
