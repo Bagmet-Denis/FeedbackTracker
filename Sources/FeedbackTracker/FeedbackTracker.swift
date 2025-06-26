@@ -117,13 +117,14 @@ struct FeedbackAlertView: View {
     var emailPlaceholder: String = ""
     var messagePlaceholder: String = ""
     
-    
     let title: String
     var action: ()->Void
     
     let theme: ColorTheme
     let language: Language
-
+    
+    @State private var keyboardHeight: CGFloat = 0
+    
     var body: some View {
         ZStack {
             if isPresented {
@@ -194,8 +195,25 @@ struct FeedbackAlertView: View {
                 .frame(width: UIScreen.main.bounds.width / 1.4)
                 .background(theme == .light ? Color(hex: "F0F1F1") : Color(hex: "272727"))
                 .cornerRadius(16)
+                .offset(y: -keyboardHeight / 2) // Поднимаем View на половину высоты клавиатуры
+                .animation(.easeOut(duration: 0.16), value: keyboardHeight)
                 .onAppear {
                     UITextView.appearance().backgroundColor = .clear
+                    
+                    // Подписываемся на уведомления о клавиатуре
+                    NotificationCenter.default.addObserver(forName: UIResponder.keyboardWillShowNotification, object: nil, queue: .main) { notification in
+                        guard let keyboardFrame = notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? CGRect else { return }
+                        keyboardHeight = keyboardFrame.height
+                    }
+                    
+                    NotificationCenter.default.addObserver(forName: UIResponder.keyboardWillHideNotification, object: nil, queue: .main) { _ in
+                        keyboardHeight = 0
+                    }
+                }
+                .onDisappear {
+                    // Отписываемся от уведомлений
+                    NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardWillShowNotification, object: nil)
+                    NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardWillHideNotification, object: nil)
                 }
             }
         }
@@ -213,7 +231,6 @@ struct FeedbackAlertView: View {
             }
         }
     }
-    
     
     private func hideKeyboard() {
         UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
