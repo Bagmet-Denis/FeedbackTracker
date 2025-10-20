@@ -2,7 +2,6 @@
 // https://docs.swift.org/swift-book
 
 import SwiftUI
-import MessageUI
 
 public extension View {
     func addFeedback(isPresented: Binding<Bool>, language: Language, colorTheme: ColorTheme, shouldAdjustForKeyboard: Bool, emailSupport: String, urlServer: String) -> some View{
