@@ -226,9 +226,10 @@ struct FeedbackAlertView: View {
                     NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardWillShowNotification, object: nil)
                     NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardWillHideNotification, object: nil)
                 }
+                
+                ButtonHideKeyboard()
             }
         }
-        .modifier(ViewModifierFeedbackAlertToolbar())
     }
     
     private func setupKeyboardObservers() {
@@ -245,32 +246,6 @@ struct FeedbackAlertView: View {
     private func removeKeyboardObservers() {
         NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardWillShowNotification, object: nil)
         NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardWillHideNotification, object: nil)
-    }
-}
-
-struct ViewModifierFeedbackAlertToolbar: ViewModifier {
-    func body(content: Content) -> some View {
-        if #available(iOS 15.0, *) {
-            content
-                .toolbar {
-                    ToolbarItemGroup(placement: .keyboard) {
-                        HStack {
-                            Spacer()
-                            Button {
-                                hideKeyboard()
-                            } label: {
-                                Image(systemName: "keyboard.chevron.compact.down")
-                            }
-                        }
-                    }
-                }
-        } else {
-            content
-        }
-    }
-    
-    private func hideKeyboard() {
-        UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
     }
 }
 
