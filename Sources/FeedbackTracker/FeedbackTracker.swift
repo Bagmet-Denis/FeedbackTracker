@@ -230,32 +230,8 @@ struct FeedbackAlertView: View {
                 }
             }
         }
-        .toolbar {
-            ToolbarItemGroup(placement: .keyboard) {
-                HStack {
-                    Spacer()
-                    Button {
-                        hideKeyboard()
-                    } label: {
-                        Image(systemName: "keyboard.chevron.compact.down")
-                    }
-                }
-            }
-        }
+        .modifier(ViewModifierFeedbackAlertToolbar())
     }
-    
-    //    private func calculateOffset() -> CGFloat {
-    //        return keyboardHeight
-    //
-    //        guard keyboardHeight > 0 else { return 0 }
-    //
-    //        let screenHeight = UIScreen.main.bounds.height
-    //        let visibleSpace = screenHeight - keyboardHeight
-    //        let neededOffset = max(0, (alertViewHeight - visibleSpace) / 2 + 20)
-    //
-    //        // Не поднимаем выше, чем нужно
-    //        return min(neededOffset, keyboardHeight)
-    //    }
     
     private func setupKeyboardObservers() {
         NotificationCenter.default.addObserver(forName: UIResponder.keyboardWillShowNotification, object: nil, queue: .main) { notification in
@@ -271,6 +247,28 @@ struct FeedbackAlertView: View {
     private func removeKeyboardObservers() {
         NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardWillShowNotification, object: nil)
         NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardWillHideNotification, object: nil)
+    }
+}
+
+struct ViewModifierFeedbackAlertToolbar: ViewModifier {
+    func body(content: Content) -> some View {
+        if #available(iOS 15.0, *) {
+            content
+                .toolbar {
+                    ToolbarItemGroup(placement: .keyboard) {
+                        HStack {
+                            Spacer()
+                            Button {
+                                hideKeyboard()
+                            } label: {
+                                Image(systemName: "keyboard.chevron.compact.down")
+                            }
+                        }
+                    }
+                }
+        } else {
+            content
+        }
     }
     
     private func hideKeyboard() {
