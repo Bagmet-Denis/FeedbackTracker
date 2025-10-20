@@ -156,7 +156,7 @@ struct FeedbackAlertView: View {
                     
                     TextField(emailPlaceholder, text: $email)
                         .disableAutocorrection(true)
-                        .foregroundStyle(theme == .light ? Color.black.opacity(0.8) : Color.white.opacity(0.8))
+                        .foregroundColor(theme == .light ? Color.black.opacity(0.8) : Color.white.opacity(0.8))
                         .textFieldStyle(.plain)
                         .frame(height: 40)
                         .padding(.horizontal, 9)
@@ -296,7 +296,7 @@ struct CustomFeedbackTextEditor: View {
             
             if #available(iOS 16.0, *) {
                 TextEditor(text: $text)
-                    .foregroundStyle(theme == .light ? Color.black.opacity(0.8) : Color.white.opacity(0.8))
+                    .foregroundColor(theme == .light ? Color.black.opacity(0.8) : Color.white.opacity(0.8))
                     .padding(internalPadding)
                     .frame(height: UIScreen.main.bounds.height / 7)
                     .scrollContentBackground(.hidden)
@@ -304,7 +304,7 @@ struct CustomFeedbackTextEditor: View {
                     .opacity(text.isEmpty ? 0.1 : 1)
             } else {
                 TextEditor(text: $text)
-                    .foregroundStyle(theme == .light ? Color.black.opacity(0.8) : Color.white.opacity(0.8))
+                    .foregroundColor(theme == .light ? Color.black.opacity(0.8) : Color.white.opacity(0.8))
                     .padding(internalPadding)
                     .frame(height: UIScreen.main.bounds.height / 7)
                     .cornerRadius(5)
