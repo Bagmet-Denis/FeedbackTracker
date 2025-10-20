@@ -213,7 +213,6 @@ struct FeedbackAlertView: View {
                 .onAppear {
                     UITextView.appearance().backgroundColor = .clear
                     
-                    // Подписываемся на уведомления о клавиатуре
                     NotificationCenter.default.addObserver(forName: UIResponder.keyboardWillShowNotification, object: nil, queue: .main) { notification in
                         guard let keyboardFrame = notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? CGRect else { return }
                         keyboardHeight = keyboardFrame.height
@@ -224,7 +223,6 @@ struct FeedbackAlertView: View {
                     }
                 }
                 .onDisappear {
-                    // Отписываемся от уведомлений
                     NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardWillShowNotification, object: nil)
                     NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardWillHideNotification, object: nil)
                 }
