@@ -30,10 +30,15 @@ struct FeedbackModifier: ViewModifier {
     @State var showToastSuccessfulSendReport: Bool = false
     
     func body(content: Content) -> some View {
-        ZStack(alignment: Alignment(horizontal: .center, vertical: .top)){
+        ZStack(alignment: Alignment(horizontal: .center, vertical: .top)) {
             content
                 .sheet(isPresented: $isPresentedSheetSendMessage) {
-                    FeedbackSheetSendMessage(feedbackRepository: feedbackRepository, language: language, theme: theme, urlServer: urlServer)
+                    FeedbackSheetSendMessage(
+                        feedbackRepository: feedbackRepository,
+                        language: language,
+                        theme: theme,
+                        urlServer: urlServer
+                    )
                 }
                 .actionSheet(isPresented: $isPresented) {
                     ActionSheet(title: Text(Localization.text(.titleSheet, language: language)), buttons: [
@@ -47,57 +52,14 @@ struct FeedbackModifier: ViewModifier {
                         }),
                         .default(Text(Localization.text(.copyEmail, language: language)), action: {
                             UIPasteboard.general.string = emailSupport
-                            showToastSuccessfulCopy = true
+                            GlobalToastManager.shared.showToast(language: language, theme: theme) {
+                                CustomToastSuccessfullyCopied(language: language, theme: theme)
+                            }
                         }),
                         .cancel(Text(Localization.text(.cancel, language: language)))
                     ])
                 }
-            
-            
-            
-            //            if showAlert{
-            //                FeedbackAlertView(
-            //                    isPresented: $showAlert,
-            //                    email: $feedbackRepository.email,
-            //                    message: $feedbackRepository.message,
-            //                    emailPlaceholder: Localization.text(.email, language: language),
-            //                    messagePlaceholder: Localization.text(.message, language: language),
-            //                    title: Localization.text(.feedback, language: language),
-            //                    action: {
-            //                        Task{await feedbackRepository.sendFeedback(urlPath: urlServer)}
-            //
-            //                        showAlert = false
-            //                        showToastSuccessfulSendReport = true
-            //                    },
-            //                    theme: theme,
-            //                    language: language,
-            //                    shouldAdjustForKeyboard: shouldAdjustForKeyboard
-            //                )
-            //            }
-            
-            //            CustomToastSuccessfullySendReport(language: language, theme: theme)
-            //                .offset(y: showToastSuccessfulSendReport ? 10 : -UIScreen.main.bounds.height * 2)
-            //                .opacity(showToastSuccessfulSendReport ? 1 : 0)
-            //                .animation(.easeInOut(duration: 0.8), value: showToastSuccessfulSendReport)
-            //                .onChange(of: showToastSuccessfulSendReport) { _ in
-            //                    if showToastSuccessfulSendReport{
-            //                        DispatchQueue.main.asyncAfter(deadline: .now() + 2){
-            //                            showToastSuccessfulSendReport = false
-            //                        }
-            //                    }
-            //                }
-            //
-            //            CustomToastSuccessfullyCopied(language: language, theme: theme)
-            //                .offset(y: showToastSuccessfulCopy ? 10 : -UIScreen.main.bounds.height * 2)
-            //                .opacity(showToastSuccessfulCopy ? 1 : 0)
-            //                .animation(.easeInOut(duration: 0.8), value: showToastSuccessfulCopy)
-            //                .onChange(of: showToastSuccessfulCopy) { _ in
-            //                    if showToastSuccessfulCopy{
-            //                        DispatchQueue.main.asyncAfter(deadline: .now() + 2){
-            //                            showToastSuccessfulCopy = false
-            //                        }
-            //                    }
-            //                }
+            // Toasts handled via GlobalToastManager
         }
     }
     
@@ -161,11 +123,13 @@ struct FeedbackSheetSendMessage: View {
                 
                 ToolbarItem(placement: .confirmationAction) {
                     Button("Done", systemImage: "checkmark") {
-                        Task { await feedbackRepository.sendFeedback(urlPath: urlServer) }
-                        
+                        Task {
+                            await feedbackRepository.sendFeedback(urlPath: urlServer)
+                            GlobalToastManager.shared.showToast(language: language, theme: theme) {
+                                CustomToastSuccessfullySendReport(language: language, theme: theme)
+                            }
+                        }
                         presentationMode.wrappedValue.dismiss()
-                        //TODO alert success send message
-//                        showToastSuccessfulSendReport = true
                     }
                 }
             }
@@ -180,20 +144,20 @@ struct FeedbackSheetSendMessage: View {
 //    @Binding var isPresented: Bool
 //    @Binding var email: String
 //    @Binding var message: String
-//    
+//
 //    var emailPlaceholder: String = ""
 //    var messagePlaceholder: String = ""
-//    
+//
 //    let title: String
 //    var action: ()->Void
-//    
+//
 //    let theme: ColorTheme
 //    let language: Language
 //    let shouldAdjustForKeyboard: Bool // Новый параметр
-//    
+//
 //    @State private var keyboardHeight: CGFloat = 0
 //    @State private var alertViewHeight: CGFloat = 0
-//    
+//
 //    var body: some View {
 //        ZStack {
 //            if isPresented {
@@ -201,41 +165,41 @@ struct FeedbackSheetSendMessage: View {
 //                    .onTapGesture {
 //                        isPresented = false
 //                    }
-//                
+//
 //                VStack(alignment: .leading, spacing: 0) {
 //                    Text(title)
 //                        .font(.system(size: 18, weight: .bold))
 //                        .foregroundColor(theme == .light ? Color.black : Color.white)
 //                        .padding()
 //                        .opacity(0.8)
-//                    
+//
 //                    Divider()
-//                    
+//
 //                    Text(Localization.text(.emailTitle, language: language))
 //                        .font(.caption)
 //                        .fontWeight(.regular)
 //                        .foregroundColor(.gray)
 //                        .padding(10)
-//                    
+//
 //                    TextField(emailPlaceholder, text: $email)
 //                        .disableAutocorrection(true)
 //                        .foregroundColor(theme == .light ? Color.black.opacity(0.8) : Color.white.opacity(0.8))
 //                        .textFieldStyle(.plain)
 //                        .frame(height: 40)
 //                        .padding(.horizontal, 9)
-//                    
+//
 //                    Divider()
-//                    
+//
 //                    Text(Localization.text(.messageTitle, language: language))
 //                        .font(.caption)
 //                        .fontWeight(.regular)
 //                        .foregroundColor(.gray)
 //                        .padding(10)
-//                    
+//
 //                    CustomFeedbackTextEditor(placeholder: messagePlaceholder, text: $message, theme: theme)
-//                    
+//
 //                    Divider()
-//                    
+//
 //                    HStack{
 //                        Button {
 //                            isPresented = false
@@ -245,10 +209,10 @@ struct FeedbackSheetSendMessage: View {
 //                                .contentShape(.rect)
 //                                .frame(maxWidth: .infinity, alignment: .center)
 //                        }
-//                        
+//
 //                        Divider()
 //                            .frame(height: 50)
-//                        
+//
 //                        Button {
 //                            action()
 //                        } label: {
@@ -275,12 +239,12 @@ struct FeedbackSheetSendMessage: View {
 //                .animation(.easeOut(duration: 0.16), value: keyboardHeight)
 //                .onAppear {
 //                    UITextView.appearance().backgroundColor = .clear
-//                    
+//
 //                    NotificationCenter.default.addObserver(forName: UIResponder.keyboardWillShowNotification, object: nil, queue: .main) { notification in
 //                        guard let keyboardFrame = notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? CGRect else { return }
 //                        keyboardHeight = keyboardFrame.height
 //                    }
-//                    
+//
 //                    NotificationCenter.default.addObserver(forName: UIResponder.keyboardWillHideNotification, object: nil, queue: .main) { _ in
 //                        keyboardHeight = 0
 //                    }
@@ -289,23 +253,23 @@ struct FeedbackSheetSendMessage: View {
 //                    NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardWillShowNotification, object: nil)
 //                    NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardWillHideNotification, object: nil)
 //                }
-//                
+//
 //                ButtonHideKeyboard()
 //            }
 //        }
 //    }
-//    
+//
 //    private func setupKeyboardObservers() {
 //        NotificationCenter.default.addObserver(forName: UIResponder.keyboardWillShowNotification, object: nil, queue: .main) { notification in
 //            guard let keyboardFrame = notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? CGRect else { return }
 //            keyboardHeight = keyboardFrame.height
 //        }
-//        
+//
 //        NotificationCenter.default.addObserver(forName: UIResponder.keyboardWillHideNotification, object: nil, queue: .main) { _ in
 //            keyboardHeight = 0
 //        }
 //    }
-//    
+//
 //    private func removeKeyboardObservers() {
 //        NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardWillShowNotification, object: nil)
 //        NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardWillHideNotification, object: nil)
@@ -347,6 +311,58 @@ struct CustomFeedbackTextEditor: View {
                     .allowsHitTesting(false)
             }
         }
+    }
+}
+
+// Global Toast Manager and Container
+import UIKit
+
+final class GlobalToastManager {
+    static let shared = GlobalToastManager()
+    private init() {}
+
+    func showToast<Content: View>(language: Language, theme: ColorTheme, @ViewBuilder content: @escaping () -> Content) {
+        guard let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene,
+              let window = windowScene.windows.first else { return }
+
+        let hosting = UIHostingController(rootView: GlobalToastContainer(content: content))
+        hosting.view.backgroundColor = .clear
+
+        let toastHeight: CGFloat = 60
+        let width = window.frame.width * 0.9
+        hosting.view.frame = CGRect(
+            x: (window.frame.width - width) / 2,
+            y: -toastHeight,
+            width: width,
+            height: toastHeight
+        )
+
+        window.addSubview(hosting.view)
+
+        UIView.animate(withDuration: 0.4, animations: {
+            hosting.view.frame.origin.y = 80
+        }) { _ in
+            DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) {
+                UIView.animate(withDuration: 0.4, animations: {
+                    hosting.view.frame.origin.y = -toastHeight
+                    hosting.view.alpha = 0
+                }) { _ in
+                    hosting.view.removeFromSuperview()
+                }
+            }
+        }
+    }
+}
+
+struct GlobalToastContainer<Content: View>: View {
+    let content: () -> Content
+    var body: some View {
+        content()
+            .padding()
+//            .background(.ultraThinMaterial)
+            .cornerRadius(12)
+            .shadow(radius: 10)
+            .padding(.horizontal)
     }
 }
 
