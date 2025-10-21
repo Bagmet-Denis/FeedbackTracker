@@ -33,7 +33,33 @@ struct FeedbackModifier: ViewModifier {
         ZStack(alignment: Alignment(horizontal: .center, vertical: .top)){
             content
                 .sheet(isPresented: $isPresentedSheetSendMessage) {
-                    
+                    NavigationView {
+                        VStack {
+                            Text(Localization.text(.emailTitle, language: language))
+                                .font(.caption)
+                                .fontWeight(.regular)
+                                .foregroundColor(.gray)
+                            
+                            TextField(Localization.text(.email, language: language), text: $feedbackRepository.email)
+                                .disableAutocorrection(true)
+                                .foregroundColor(theme == .light ? Color.black.opacity(0.8) : Color.white.opacity(0.8))
+                                .textFieldStyle(.plain)
+                                .frame(height: 40)
+                            
+                            Text(Localization.text(.messageTitle, language: language))
+                                .font(.caption)
+                                .fontWeight(.regular)
+                                .foregroundColor(.gray)
+                                .padding(10)
+                            
+                            CustomFeedbackTextEditor(placeholder: Localization.text(.message, language: language), text: $feedbackRepository.message, theme: theme)
+                        }
+                        .padding()
+                        .navigationBarTitleDisplayMode(.inline)
+                        .navigationTitle(Text(Localization.text(.feedback, language: language)))
+                        
+                    }
+                    .navigationViewStyle(.stack)
                 }
                 .actionSheet(isPresented: $isPresented) {
                     ActionSheet(title: Text(Localization.text(.titleSheet, language: language)), buttons: [
