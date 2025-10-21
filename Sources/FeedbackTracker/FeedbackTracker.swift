@@ -152,6 +152,13 @@ struct FeedbackSheetSendMessage: View {
             .navigationBarTitleDisplayMode(.inline)
             .navigationTitle(Text(Localization.text(.feedback, language: language)))
             .toolbar {
+                
+                ToolbarItem(placement: .cancellationAction) {
+                    Button("Cancel", systemImage: "xmark") {
+                        presentationMode.wrappedValue.dismiss()
+                    }
+                }
+                
                 ToolbarItem(placement: .confirmationAction) {
                     Button("Done", systemImage: "checkmark") {
                         Task { await feedbackRepository.sendFeedback(urlPath: urlServer) }
