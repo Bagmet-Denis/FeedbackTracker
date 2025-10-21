@@ -116,31 +116,39 @@ struct FeedbackSheetSendMessage: View {
     let urlServer: String
     var body: some View {
         NavigationView {
-            ScrollView(showsIndicators: false, content: {
-                VStack(alignment: .leading) {
-                    Text(Localization.text(.emailTitle, language: language))
-                        .font(.caption)
-                        .fontWeight(.regular)
-                        .foregroundColor(.gray)
-                    
-                    TextField(Localization.text(.email, language: language), text: $feedbackRepository.email)
-                        .disableAutocorrection(true)
-                        .foregroundColor(theme == .light ? Color.black.opacity(0.8) : Color.white.opacity(0.8))
-                        .textFieldStyle(.plain)
-                        .padding()
-                        .background(Color(.systemGray6))
-                        .clipShape(.rect(cornerRadius: 24))
-                    
-                    Text(Localization.text(.messageTitle, language: language))
-                        .font(.caption)
-                        .fontWeight(.regular)
-                        .foregroundColor(.gray)
-                        .padding(.top)
-                    
-                    CustomFeedbackTextEditor(placeholder: Localization.text(.message, language: language), text: $feedbackRepository.message, theme: theme)
+            ZStack {
+                if theme == .dark {
+                    Color.black.ignoresSafeArea()
+                } else {
+                    Color.white.ignoresSafeArea()
                 }
-                .padding()
-            })
+                
+                ScrollView(showsIndicators: false, content: {
+                    VStack(alignment: .leading) {
+                        Text(Localization.text(.emailTitle, language: language))
+                            .font(.caption)
+                            .fontWeight(.regular)
+                            .foregroundColor(.gray)
+                        
+                        TextField(Localization.text(.email, language: language), text: $feedbackRepository.email)
+                            .disableAutocorrection(true)
+                            .foregroundColor(theme == .light ? Color.black.opacity(0.8) : Color.white.opacity(0.8))
+                            .textFieldStyle(.plain)
+                            .padding()
+                            .background(Color(.systemGray6))
+                            .clipShape(.rect(cornerRadius: 24))
+                        
+                        Text(Localization.text(.messageTitle, language: language))
+                            .font(.caption)
+                            .fontWeight(.regular)
+                            .foregroundColor(.gray)
+                            .padding(.top)
+                        
+                        CustomFeedbackTextEditor(placeholder: Localization.text(.message, language: language), text: $feedbackRepository.message, theme: theme)
+                    }
+                    .padding()
+                })
+            }
             .navigationBarTitleDisplayMode(.inline)
             .navigationTitle(Text(Localization.text(.feedback, language: language)))
             .toolbar {
@@ -336,7 +344,7 @@ struct CustomFeedbackTextEditor: View {
 }
 
 #Preview{
-    FeedbackSheetSendMessage(feedbackRepository: FeedbackRepository(), language: .en, theme: .light, urlServer: "")
+    FeedbackSheetSendMessage(feedbackRepository: FeedbackRepository(), language: .en, theme: .dark, urlServer: "")
 }
 
 struct CustomToastSuccessfullyCopied: View{
