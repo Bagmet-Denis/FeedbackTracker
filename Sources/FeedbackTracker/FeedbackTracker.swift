@@ -33,45 +33,7 @@ struct FeedbackModifier: ViewModifier {
         ZStack(alignment: Alignment(horizontal: .center, vertical: .top)){
             content
                 .sheet(isPresented: $isPresentedSheetSendMessage) {
-                    NavigationView {
-                        ScrollView(showsIndicators: false, content: {
-                            VStack(alignment: .leading) {
-                                Text(Localization.text(.emailTitle, language: language))
-                                    .font(.caption)
-                                    .fontWeight(.regular)
-                                    .foregroundColor(.gray)
-                                
-                                TextField(Localization.text(.email, language: language), text: $feedbackRepository.email)
-                                    .disableAutocorrection(true)
-                                    .foregroundColor(theme == .light ? Color.black.opacity(0.8) : Color.white.opacity(0.8))
-                                    .textFieldStyle(.roundedBorder)
-                                    .frame(height: 40)
-                                
-                                Text(Localization.text(.messageTitle, language: language))
-                                    .font(.caption)
-                                    .fontWeight(.regular)
-                                    .foregroundColor(.gray)
-                                    .padding(10)
-                                
-                                CustomFeedbackTextEditor(placeholder: Localization.text(.message, language: language), text: $feedbackRepository.message, theme: theme)
-                            }
-                            .padding()
-                        })
-                        .navigationBarTitleDisplayMode(.inline)
-                        .navigationTitle(Text(Localization.text(.feedback, language: language)))
-                        .toolbar {
-                            ToolbarItem(placement: .confirmationAction) {
-                                Button("Done", systemImage: "checkmark") {
-                                    Task { await feedbackRepository.sendFeedback(urlPath: urlServer) }
-                                    
-                                    isPresentedSheetSendMessage = false
-                                    showToastSuccessfulSendReport = true
-                                }
-                            }
-                        }
-                        
-                    }
-                    .navigationViewStyle(.stack)
+                    FeedbackSheetSendMessage(feedbackRepository: feedbackRepository, language: language, theme: theme, urlServer: urlServer)
                 }
                 .actionSheet(isPresented: $isPresented) {
                     ActionSheet(title: Text(Localization.text(.titleSheet, language: language)), buttons: [
@@ -140,196 +102,241 @@ struct FeedbackModifier: ViewModifier {
     }
     
     func openMail() {
-        if let url = URL(string: emailSupport),
-           UIApplication.shared.canOpenURL(url)
-        {
+        if let url = URL(string: emailSupport), UIApplication.shared.canOpenURL(url){
             UIApplication.shared.open(url, options: [:], completionHandler: nil)
         }
     }
 }
 
-struct FeedbackAlertView: View {
-    @Binding var isPresented: Bool
-    @Binding var email: String
-    @Binding var message: String
-    
-    var emailPlaceholder: String = ""
-    var messagePlaceholder: String = ""
-    
-    let title: String
-    var action: ()->Void
-    
-    let theme: ColorTheme
+struct FeedbackSheetSendMessage: View {
+    @Environment(\.presentationMode) private var presentationMode
+    @ObservedObject var feedbackRepository: FeedbackRepository
     let language: Language
-    let shouldAdjustForKeyboard: Bool // Новый параметр
-    
-    @State private var keyboardHeight: CGFloat = 0
-    @State private var alertViewHeight: CGFloat = 0
-    
+    let theme: ColorTheme
+    let urlServer: String
     var body: some View {
-        ZStack {
-            if isPresented {
-                Color.black.opacity(0.5).edgesIgnoringSafeArea(.all)
-                    .onTapGesture {
-                        isPresented = false
-                    }
-                
-                VStack(alignment: .leading, spacing: 0) {
-                    Text(title)
-                        .font(.system(size: 18, weight: .bold))
-                        .foregroundColor(theme == .light ? Color.black : Color.white)
-                        .padding()
-                        .frame(maxWidth: .infinity, alignment: .center)
-                        .opacity(0.8)
-                    
-                    Divider()
-                    
+        NavigationView {
+            ScrollView(showsIndicators: false, content: {
+                VStack(alignment: .leading) {
                     Text(Localization.text(.emailTitle, language: language))
                         .font(.caption)
                         .fontWeight(.regular)
                         .foregroundColor(.gray)
-                        .padding(10)
                     
-                    TextField(emailPlaceholder, text: $email)
+                    TextField(Localization.text(.email, language: language), text: $feedbackRepository.email)
                         .disableAutocorrection(true)
                         .foregroundColor(theme == .light ? Color.black.opacity(0.8) : Color.white.opacity(0.8))
                         .textFieldStyle(.plain)
-                        .frame(height: 40)
-                        .padding(.horizontal, 9)
-                    
-                    Divider()
+                        .padding()
+                        .background(Color(.systemGray6))
+                        .clipShape(.rect(cornerRadius: 24))
                     
                     Text(Localization.text(.messageTitle, language: language))
                         .font(.caption)
                         .fontWeight(.regular)
                         .foregroundColor(.gray)
-                        .padding(10)
+                        .padding(.top)
                     
-                    CustomFeedbackTextEditor(placeholder: messagePlaceholder, text: $message, theme: theme)
-                    
-                    Divider()
-                    
-                    HStack{
-                        Button {
-                            isPresented = false
-                        } label: {
-                            Text(Localization.text(.cancel, language: language))
-                                .padding(.vertical, 14)
-                                .contentShape(.rect)
-                                .frame(maxWidth: .infinity, alignment: .center)
-                        }
+                    CustomFeedbackTextEditor(placeholder: Localization.text(.message, language: language), text: $feedbackRepository.message, theme: theme)
+                }
+                .padding()
+            })
+            .navigationBarTitleDisplayMode(.inline)
+            .navigationTitle(Text(Localization.text(.feedback, language: language)))
+            .toolbar {
+                ToolbarItem(placement: .confirmationAction) {
+                    Button("Done", systemImage: "checkmark") {
+                        Task { await feedbackRepository.sendFeedback(urlPath: urlServer) }
                         
-                        Divider()
-                            .frame(height: 50)
-                        
-                        Button {
-                            action()
-                        } label: {
-                            Text(Localization.text(.submit, language: language))
-                                .padding(.vertical, 14)
-                                .contentShape(.rect)
-                                .frame(maxWidth: .infinity, alignment: .center)
-                        }
-                        .disabled(message.isEmpty)
+                        presentationMode.wrappedValue.dismiss()
+                        //TODO alert success send message
+//                        showToastSuccessfulSendReport = true
                     }
                 }
-                .frame(width: UIScreen.main.bounds.width / 1.4)
-                .background(theme == .light ? Color(hex: "F0F1F1") : Color(hex: "272727"))
-                .cornerRadius(16)
-                .background(
-                    GeometryReader { geometry in
-                        Color.clear
-                            .onAppear {
-                                alertViewHeight = geometry.size.height
-                            }
-                    }
-                )
-                .offset(y: shouldAdjustForKeyboard ? -keyboardHeight / 3 : 0)
-                .animation(.easeOut(duration: 0.16), value: keyboardHeight)
-                .onAppear {
-                    UITextView.appearance().backgroundColor = .clear
-                    
-                    NotificationCenter.default.addObserver(forName: UIResponder.keyboardWillShowNotification, object: nil, queue: .main) { notification in
-                        guard let keyboardFrame = notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? CGRect else { return }
-                        keyboardHeight = keyboardFrame.height
-                    }
-                    
-                    NotificationCenter.default.addObserver(forName: UIResponder.keyboardWillHideNotification, object: nil, queue: .main) { _ in
-                        keyboardHeight = 0
-                    }
-                }
-                .onDisappear {
-                    NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardWillShowNotification, object: nil)
-                    NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardWillHideNotification, object: nil)
-                }
-                
-                ButtonHideKeyboard()
             }
+            
         }
-    }
-    
-    private func setupKeyboardObservers() {
-        NotificationCenter.default.addObserver(forName: UIResponder.keyboardWillShowNotification, object: nil, queue: .main) { notification in
-            guard let keyboardFrame = notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? CGRect else { return }
-            keyboardHeight = keyboardFrame.height
-        }
-        
-        NotificationCenter.default.addObserver(forName: UIResponder.keyboardWillHideNotification, object: nil, queue: .main) { _ in
-            keyboardHeight = 0
-        }
-    }
-    
-    private func removeKeyboardObservers() {
-        NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardWillShowNotification, object: nil)
-        NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardWillHideNotification, object: nil)
+        .preferredColorScheme(theme == .dark ? .dark : .light)
+        .navigationViewStyle(.stack)
     }
 }
+
+//struct FeedbackAlertView: View {
+//    @Binding var isPresented: Bool
+//    @Binding var email: String
+//    @Binding var message: String
+//    
+//    var emailPlaceholder: String = ""
+//    var messagePlaceholder: String = ""
+//    
+//    let title: String
+//    var action: ()->Void
+//    
+//    let theme: ColorTheme
+//    let language: Language
+//    let shouldAdjustForKeyboard: Bool // Новый параметр
+//    
+//    @State private var keyboardHeight: CGFloat = 0
+//    @State private var alertViewHeight: CGFloat = 0
+//    
+//    var body: some View {
+//        ZStack {
+//            if isPresented {
+//                Color.black.opacity(0.5).edgesIgnoringSafeArea(.all)
+//                    .onTapGesture {
+//                        isPresented = false
+//                    }
+//                
+//                VStack(alignment: .leading, spacing: 0) {
+//                    Text(title)
+//                        .font(.system(size: 18, weight: .bold))
+//                        .foregroundColor(theme == .light ? Color.black : Color.white)
+//                        .padding()
+//                        .opacity(0.8)
+//                    
+//                    Divider()
+//                    
+//                    Text(Localization.text(.emailTitle, language: language))
+//                        .font(.caption)
+//                        .fontWeight(.regular)
+//                        .foregroundColor(.gray)
+//                        .padding(10)
+//                    
+//                    TextField(emailPlaceholder, text: $email)
+//                        .disableAutocorrection(true)
+//                        .foregroundColor(theme == .light ? Color.black.opacity(0.8) : Color.white.opacity(0.8))
+//                        .textFieldStyle(.plain)
+//                        .frame(height: 40)
+//                        .padding(.horizontal, 9)
+//                    
+//                    Divider()
+//                    
+//                    Text(Localization.text(.messageTitle, language: language))
+//                        .font(.caption)
+//                        .fontWeight(.regular)
+//                        .foregroundColor(.gray)
+//                        .padding(10)
+//                    
+//                    CustomFeedbackTextEditor(placeholder: messagePlaceholder, text: $message, theme: theme)
+//                    
+//                    Divider()
+//                    
+//                    HStack{
+//                        Button {
+//                            isPresented = false
+//                        } label: {
+//                            Text(Localization.text(.cancel, language: language))
+//                                .padding(.vertical, 14)
+//                                .contentShape(.rect)
+//                                .frame(maxWidth: .infinity, alignment: .center)
+//                        }
+//                        
+//                        Divider()
+//                            .frame(height: 50)
+//                        
+//                        Button {
+//                            action()
+//                        } label: {
+//                            Text(Localization.text(.submit, language: language))
+//                                .padding(.vertical, 14)
+//                                .contentShape(.rect)
+//                                .frame(maxWidth: .infinity, alignment: .center)
+//                        }
+//                        .disabled(message.isEmpty)
+//                    }
+//                }
+//                .frame(width: UIScreen.main.bounds.width / 1.4)
+//                .background(theme == .light ? Color(hex: "F0F1F1") : Color(hex: "272727"))
+//                .cornerRadius(16)
+//                .background(
+//                    GeometryReader { geometry in
+//                        Color.clear
+//                            .onAppear {
+//                                alertViewHeight = geometry.size.height
+//                            }
+//                    }
+//                )
+//                .offset(y: shouldAdjustForKeyboard ? -keyboardHeight / 3 : 0)
+//                .animation(.easeOut(duration: 0.16), value: keyboardHeight)
+//                .onAppear {
+//                    UITextView.appearance().backgroundColor = .clear
+//                    
+//                    NotificationCenter.default.addObserver(forName: UIResponder.keyboardWillShowNotification, object: nil, queue: .main) { notification in
+//                        guard let keyboardFrame = notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? CGRect else { return }
+//                        keyboardHeight = keyboardFrame.height
+//                    }
+//                    
+//                    NotificationCenter.default.addObserver(forName: UIResponder.keyboardWillHideNotification, object: nil, queue: .main) { _ in
+//                        keyboardHeight = 0
+//                    }
+//                }
+//                .onDisappear {
+//                    NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardWillShowNotification, object: nil)
+//                    NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardWillHideNotification, object: nil)
+//                }
+//                
+//                ButtonHideKeyboard()
+//            }
+//        }
+//    }
+//    
+//    private func setupKeyboardObservers() {
+//        NotificationCenter.default.addObserver(forName: UIResponder.keyboardWillShowNotification, object: nil, queue: .main) { notification in
+//            guard let keyboardFrame = notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? CGRect else { return }
+//            keyboardHeight = keyboardFrame.height
+//        }
+//        
+//        NotificationCenter.default.addObserver(forName: UIResponder.keyboardWillHideNotification, object: nil, queue: .main) { _ in
+//            keyboardHeight = 0
+//        }
+//    }
+//    
+//    private func removeKeyboardObservers() {
+//        NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardWillShowNotification, object: nil)
+//        NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardWillHideNotification, object: nil)
+//    }
+//}
 
 struct CustomFeedbackTextEditor: View {
     var placeholder: String = "Denis"
     @Binding var text: String
     
     let theme: ColorTheme
-    let internalPadding: CGFloat = 5
     
     var body: some View {
         ZStack(alignment: .topLeading) {
-            if text.isEmpty  {
-                Text(placeholder)
-                    .foregroundColor(Color.primary.opacity(0.25))
-            }
-            
             if #available(iOS 16.0, *) {
                 TextEditor(text: $text)
                     .foregroundColor(theme == .light ? Color.black.opacity(0.8) : Color.white.opacity(0.8))
-                    .padding(internalPadding)
                     .frame(height: UIScreen.main.bounds.height / 7)
                     .scrollContentBackground(.hidden)
-                    .cornerRadius(5)
                     .opacity(text.isEmpty ? 0.1 : 1)
+                    .padding()
+                    .background(Color(.systemGray6))
+                    .clipShape(.rect(cornerRadius: 24))
             } else {
                 TextEditor(text: $text)
                     .foregroundColor(theme == .light ? Color.black.opacity(0.8) : Color.white.opacity(0.8))
-                    .padding(internalPadding)
                     .frame(height: UIScreen.main.bounds.height / 7)
-                    .cornerRadius(5)
                     .opacity(text.isEmpty ? 0.1 : 1)
+                    .padding()
+                    .background(Color(.systemGray6))
+                    .clipShape(.rect(cornerRadius: 24))
             }
             
+            if text.isEmpty  {
+                Text(placeholder)
+                    .foregroundColor(Color.primary.opacity(0.25))
+                    .padding(.leading, 20)
+                    .padding(.top, 24)
+                    .allowsHitTesting(false)
+            }
         }
-//        .onAppear() {
-//            UITextView.appearance().backgroundColor = .clear
-//        }
     }
 }
 
 #Preview{
-    FeedbackAlertView(isPresented: .constant(true), email: .constant("Test"), message: .constant("Test"), emailPlaceholder: "Test", messagePlaceholder: "Test", title: "Test", action: {
-        
-    }, theme: .dark, language: .en, shouldAdjustForKeyboard: true)
-    .preferredColorScheme(.dark)
-    
-    CustomToastSuccessfullyCopied(language: .en, theme: .light)
+    FeedbackSheetSendMessage(feedbackRepository: FeedbackRepository(), language: .en, theme: .light, urlServer: "")
 }
 
 struct CustomToastSuccessfullyCopied: View{
