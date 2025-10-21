@@ -75,29 +75,29 @@ struct FeedbackModifier: ViewModifier {
 //                )
 //            }
             
-            CustomToastSuccessfullySendReport(language: language, theme: theme)
-                .offset(y: showToastSuccessfulSendReport ? 10 : -UIScreen.main.bounds.height * 2)
-                .opacity(showToastSuccessfulSendReport ? 1 : 0)
-                .animation(.easeInOut(duration: 0.8), value: showToastSuccessfulSendReport)
-                .onChange(of: showToastSuccessfulSendReport) { _ in
-                    if showToastSuccessfulSendReport{
-                        DispatchQueue.main.asyncAfter(deadline: .now() + 2){
-                            showToastSuccessfulSendReport = false
-                        }
-                    }
-                }
-            
-            CustomToastSuccessfullyCopied(language: language, theme: theme)
-                .offset(y: showToastSuccessfulCopy ? 10 : -UIScreen.main.bounds.height * 2)
-                .opacity(showToastSuccessfulCopy ? 1 : 0)
-                .animation(.easeInOut(duration: 0.8), value: showToastSuccessfulCopy)
-                .onChange(of: showToastSuccessfulCopy) { _ in
-                    if showToastSuccessfulCopy{
-                        DispatchQueue.main.asyncAfter(deadline: .now() + 2){
-                            showToastSuccessfulCopy = false
-                        }
-                    }
-                }
+//            CustomToastSuccessfullySendReport(language: language, theme: theme)
+//                .offset(y: showToastSuccessfulSendReport ? 10 : -UIScreen.main.bounds.height * 2)
+//                .opacity(showToastSuccessfulSendReport ? 1 : 0)
+//                .animation(.easeInOut(duration: 0.8), value: showToastSuccessfulSendReport)
+//                .onChange(of: showToastSuccessfulSendReport) { _ in
+//                    if showToastSuccessfulSendReport{
+//                        DispatchQueue.main.asyncAfter(deadline: .now() + 2){
+//                            showToastSuccessfulSendReport = false
+//                        }
+//                    }
+//                }
+//            
+//            CustomToastSuccessfullyCopied(language: language, theme: theme)
+//                .offset(y: showToastSuccessfulCopy ? 10 : -UIScreen.main.bounds.height * 2)
+//                .opacity(showToastSuccessfulCopy ? 1 : 0)
+//                .animation(.easeInOut(duration: 0.8), value: showToastSuccessfulCopy)
+//                .onChange(of: showToastSuccessfulCopy) { _ in
+//                    if showToastSuccessfulCopy{
+//                        DispatchQueue.main.asyncAfter(deadline: .now() + 2){
+//                            showToastSuccessfulCopy = false
+//                        }
+//                    }
+//                }
         }
     }
     
