@@ -25,19 +25,22 @@ struct FeedbackModifier: ViewModifier {
     let emailSupport: String
     let urlServer: String
     
-    @State var showAlert: Bool = false
+    @State var isPresentedSheetSendMessage: Bool = false
     @State var showToastSuccessfulCopy: Bool = false
     @State var showToastSuccessfulSendReport: Bool = false
     
     func body(content: Content) -> some View {
         ZStack(alignment: Alignment(horizontal: .center, vertical: .top)){
             content
+                .sheet(isPresented: $isPresentedSheetSendMessage) {
+                    
+                }
                 .actionSheet(isPresented: $isPresented) {
                     ActionSheet(title: Text(Localization.text(.titleSheet, language: language)), buttons: [
                         .default(Text(Localization.text(.quickFeedback, language: language)), action: {
                             feedbackRepository.email.removeAll()
                             feedbackRepository.message.removeAll()
-                            showAlert = true
+                            isPresentedSheetSendMessage = true
                         }),
                         .default(Text(Localization.text(.sendToEmail, language: language)), action: {
                             openMail()
@@ -50,49 +53,27 @@ struct FeedbackModifier: ViewModifier {
                     ])
                 }
             
-//            VStack{
-//                Spacer()
-//                
-//                Color.clear
-//                    .frame(height: 1)
-//                    .actionSheet(isPresented: $isPresented) {
-//                        ActionSheet(title: Text(Localization.text(.titleSheet, language: language)), buttons: [
-//                            .default(Text(Localization.text(.quickFeedback, language: language)), action: {
-//                                feedbackRepository.email.removeAll()
-//                                feedbackRepository.message.removeAll()
-//                                showAlert = true
-//                            }),
-//                            .default(Text(Localization.text(.sendToEmail, language: language)), action: {
-//                                openMail()
-//                            }),
-//                            .default(Text(Localization.text(.copyEmail, language: language)), action: {
-//                                UIPasteboard.general.string = emailSupport
-//                                showToastSuccessfulCopy = true
-//                            }),
-//                            .cancel(Text(Localization.text(.cancel, language: language)))
-//                        ])
-//                    }
-//            }
             
-            if showAlert{
-                FeedbackAlertView(
-                    isPresented: $showAlert,
-                    email: $feedbackRepository.email,
-                    message: $feedbackRepository.message,
-                    emailPlaceholder: Localization.text(.email, language: language),
-                    messagePlaceholder: Localization.text(.message, language: language),
-                    title: Localization.text(.feedback, language: language),
-                    action: {
-                        Task{await feedbackRepository.sendFeedback(urlPath: urlServer)}
-                        
-                        showAlert = false
-                        showToastSuccessfulSendReport = true
-                    },
-                    theme: theme,
-                    language: language,
-                    shouldAdjustForKeyboard: shouldAdjustForKeyboard
-                )
-            }
+            
+//            if showAlert{
+//                FeedbackAlertView(
+//                    isPresented: $showAlert,
+//                    email: $feedbackRepository.email,
+//                    message: $feedbackRepository.message,
+//                    emailPlaceholder: Localization.text(.email, language: language),
+//                    messagePlaceholder: Localization.text(.message, language: language),
+//                    title: Localization.text(.feedback, language: language),
+//                    action: {
+//                        Task{await feedbackRepository.sendFeedback(urlPath: urlServer)}
+//                        
+//                        showAlert = false
+//                        showToastSuccessfulSendReport = true
+//                    },
+//                    theme: theme,
+//                    language: language,
+//                    shouldAdjustForKeyboard: shouldAdjustForKeyboard
+//                )
+//            }
             
             CustomToastSuccessfullySendReport(language: language, theme: theme)
                 .offset(y: showToastSuccessfulSendReport ? 10 : -UIScreen.main.bounds.height * 2)
