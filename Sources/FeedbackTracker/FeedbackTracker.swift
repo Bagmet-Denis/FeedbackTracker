@@ -327,42 +327,52 @@ final class GlobalToastManager {
 
         let hosting = UIHostingController(rootView: GlobalToastContainer(content: content))
         hosting.view.backgroundColor = .clear
+        hosting.view.clipsToBounds = false
+        hosting.view.layer.cornerRadius = 12
 
-        let toastHeight: CGFloat = 60
         let width = window.frame.width * 0.9
-        hosting.view.frame = CGRect(
-            x: (window.frame.width - width) / 2,
-            y: -toastHeight,
-            width: width,
-            height: toastHeight
-        )
+        let maxHeight: CGFloat = 120
+        let finalY: CGFloat = 80
+
+        hosting.view.frame = CGRect(x: (window.frame.width - width) / 2,
+                                    y: finalY,
+                                    width: width,
+                                    height: maxHeight)
+
+        hosting.view.transform = CGAffineTransform(translationX: 0, y: -200)
+        hosting.view.alpha = 0
 
         window.addSubview(hosting.view)
 
-        UIView.animate(withDuration: 0.4, animations: {
-            hosting.view.frame.origin.y = 80
-        }) { _ in
+        UIView.animate(withDuration: 0.38, delay: 0, options: [.curveEaseOut], animations: {
+            hosting.view.transform = .identity
+            hosting.view.alpha = 1
+        }, completion: { _ in
             DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) {
-                UIView.animate(withDuration: 0.4, animations: {
-                    hosting.view.frame.origin.y = -toastHeight
+                UIView.animate(withDuration: 0.38, delay: 0, options: [.curveEaseIn], animations: {
+                    hosting.view.transform = CGAffineTransform(translationX: 0, y: -200)
                     hosting.view.alpha = 0
-                }) { _ in
+                }, completion: { _ in
                     hosting.view.removeFromSuperview()
-                }
+                })
             }
-        }
+        })
     }
 }
 
 struct GlobalToastContainer<Content: View>: View {
     let content: () -> Content
     var body: some View {
-        content()
-            .padding()
-//            .background(.ultraThinMaterial)
-            .cornerRadius(12)
-            .shadow(radius: 10)
-            .padding(.horizontal)
+        HStack {
+            content()
+                .fixedSize(horizontal: false, vertical: true)
+        }
+        .padding(.vertical, 10)
+        .padding(.horizontal, 14)
+//        .background(.ultraThinMaterial)
+        .cornerRadius(12)
+        .shadow(radius: 10)
+        .padding(.horizontal)
     }
 }
 
@@ -370,12 +380,16 @@ struct GlobalToastContainer<Content: View>: View {
     FeedbackSheetSendMessage(feedbackRepository: FeedbackRepository(), language: .en, theme: .dark, urlServer: "")
 }
 
-struct CustomToastSuccessfullyCopied: View{
+struct CustomToastSuccessfullyCopied: View {
     let language: Language
     let theme: ColorTheme
-    var body: some View{
+    var body: some View {
         Text(Localization.text(.successfulCopied, language: language))
-            .padding()
+            .multilineTextAlignment(.center)
+            .lineLimit(2)
+            .fixedSize(horizontal: false, vertical: true)
+            .padding(.vertical, 8)
+            .padding(.horizontal, 12)
             .foregroundColor(theme == .light ? Color.black : Color.white)
             .background(theme == .light ? Color.white : Color(hex: "272727"))
             .clipShape(Capsule())
@@ -383,12 +397,16 @@ struct CustomToastSuccessfullyCopied: View{
     }
 }
 
-struct CustomToastSuccessfullySendReport: View{
+struct CustomToastSuccessfullySendReport: View {
     let language: Language
     let theme: ColorTheme
-    var body: some View{
+    var body: some View {
         Text(Localization.text(.successfulSendReport, language: language))
-            .padding()
+            .multilineTextAlignment(.center)
+            .lineLimit(2)
+            .fixedSize(horizontal: false, vertical: true)
+            .padding(.vertical, 8)
+            .padding(.horizontal, 12)
             .foregroundColor(theme == .light ? Color.black : Color.white)
             .background(theme == .light ? Color.white : Color(hex: "272727"))
             .clipShape(Capsule())
