@@ -34,27 +34,29 @@ struct FeedbackModifier: ViewModifier {
             content
                 .sheet(isPresented: $isPresentedSheetSendMessage) {
                     NavigationView {
-                        VStack(alignment: .leading) {
-                            Text(Localization.text(.emailTitle, language: language))
-                                .font(.caption)
-                                .fontWeight(.regular)
-                                .foregroundColor(.gray)
-                            
-                            TextField(Localization.text(.email, language: language), text: $feedbackRepository.email)
-                                .disableAutocorrection(true)
-                                .foregroundColor(theme == .light ? Color.black.opacity(0.8) : Color.white.opacity(0.8))
-                                .textFieldStyle(.plain)
-                                .frame(height: 40)
-                            
-                            Text(Localization.text(.messageTitle, language: language))
-                                .font(.caption)
-                                .fontWeight(.regular)
-                                .foregroundColor(.gray)
-                                .padding(10)
-                            
-                            CustomFeedbackTextEditor(placeholder: Localization.text(.message, language: language), text: $feedbackRepository.message, theme: theme)
-                        }
-                        .padding()
+                        ScrollView(showsIndicators: false, content: {
+                            VStack(alignment: .leading) {
+                                Text(Localization.text(.emailTitle, language: language))
+                                    .font(.caption)
+                                    .fontWeight(.regular)
+                                    .foregroundColor(.gray)
+                                
+                                TextField(Localization.text(.email, language: language), text: $feedbackRepository.email)
+                                    .disableAutocorrection(true)
+                                    .foregroundColor(theme == .light ? Color.black.opacity(0.8) : Color.white.opacity(0.8))
+                                    .textFieldStyle(.roundedBorder)
+                                    .frame(height: 40)
+                                
+                                Text(Localization.text(.messageTitle, language: language))
+                                    .font(.caption)
+                                    .fontWeight(.regular)
+                                    .foregroundColor(.gray)
+                                    .padding(10)
+                                
+                                CustomFeedbackTextEditor(placeholder: Localization.text(.message, language: language), text: $feedbackRepository.message, theme: theme)
+                            }
+                            .padding()
+                        })
                         .navigationBarTitleDisplayMode(.inline)
                         .navigationTitle(Text(Localization.text(.feedback, language: language)))
                         .toolbar {
@@ -295,8 +297,6 @@ struct CustomFeedbackTextEditor: View {
             if text.isEmpty  {
                 Text(placeholder)
                     .foregroundColor(Color.primary.opacity(0.25))
-                    .padding(EdgeInsets(top: 7, leading: 4, bottom: 0, trailing: 0))
-                    .padding(internalPadding)
             }
             
             if #available(iOS 16.0, *) {
@@ -317,9 +317,9 @@ struct CustomFeedbackTextEditor: View {
             }
             
         }
-        .onAppear() {
-            UITextView.appearance().backgroundColor = .clear
-        }
+//        .onAppear() {
+//            UITextView.appearance().backgroundColor = .clear
+//        }
     }
 }
 
