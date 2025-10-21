@@ -34,7 +34,7 @@ struct FeedbackModifier: ViewModifier {
             content
                 .sheet(isPresented: $isPresentedSheetSendMessage) {
                     NavigationView {
-                        VStack {
+                        VStack(alignment: .leading) {
                             Text(Localization.text(.emailTitle, language: language))
                                 .font(.caption)
                                 .fontWeight(.regular)
@@ -57,6 +57,16 @@ struct FeedbackModifier: ViewModifier {
                         .padding()
                         .navigationBarTitleDisplayMode(.inline)
                         .navigationTitle(Text(Localization.text(.feedback, language: language)))
+                        .toolbar {
+                            ToolbarItem(placement: .confirmationAction) {
+                                Button("Done", systemImage: "checkmark") {
+                                    Task { await feedbackRepository.sendFeedback(urlPath: urlServer) }
+                                    
+                                    isPresentedSheetSendMessage = false
+                                    showToastSuccessfulSendReport = true
+                                }
+                            }
+                        }
                         
                     }
                     .navigationViewStyle(.stack)
@@ -81,49 +91,49 @@ struct FeedbackModifier: ViewModifier {
             
             
             
-//            if showAlert{
-//                FeedbackAlertView(
-//                    isPresented: $showAlert,
-//                    email: $feedbackRepository.email,
-//                    message: $feedbackRepository.message,
-//                    emailPlaceholder: Localization.text(.email, language: language),
-//                    messagePlaceholder: Localization.text(.message, language: language),
-//                    title: Localization.text(.feedback, language: language),
-//                    action: {
-//                        Task{await feedbackRepository.sendFeedback(urlPath: urlServer)}
-//                        
-//                        showAlert = false
-//                        showToastSuccessfulSendReport = true
-//                    },
-//                    theme: theme,
-//                    language: language,
-//                    shouldAdjustForKeyboard: shouldAdjustForKeyboard
-//                )
-//            }
+            //            if showAlert{
+            //                FeedbackAlertView(
+            //                    isPresented: $showAlert,
+            //                    email: $feedbackRepository.email,
+            //                    message: $feedbackRepository.message,
+            //                    emailPlaceholder: Localization.text(.email, language: language),
+            //                    messagePlaceholder: Localization.text(.message, language: language),
+            //                    title: Localization.text(.feedback, language: language),
+            //                    action: {
+            //                        Task{await feedbackRepository.sendFeedback(urlPath: urlServer)}
+            //
+            //                        showAlert = false
+            //                        showToastSuccessfulSendReport = true
+            //                    },
+            //                    theme: theme,
+            //                    language: language,
+            //                    shouldAdjustForKeyboard: shouldAdjustForKeyboard
+            //                )
+            //            }
             
-//            CustomToastSuccessfullySendReport(language: language, theme: theme)
-//                .offset(y: showToastSuccessfulSendReport ? 10 : -UIScreen.main.bounds.height * 2)
-//                .opacity(showToastSuccessfulSendReport ? 1 : 0)
-//                .animation(.easeInOut(duration: 0.8), value: showToastSuccessfulSendReport)
-//                .onChange(of: showToastSuccessfulSendReport) { _ in
-//                    if showToastSuccessfulSendReport{
-//                        DispatchQueue.main.asyncAfter(deadline: .now() + 2){
-//                            showToastSuccessfulSendReport = false
-//                        }
-//                    }
-//                }
-//            
-//            CustomToastSuccessfullyCopied(language: language, theme: theme)
-//                .offset(y: showToastSuccessfulCopy ? 10 : -UIScreen.main.bounds.height * 2)
-//                .opacity(showToastSuccessfulCopy ? 1 : 0)
-//                .animation(.easeInOut(duration: 0.8), value: showToastSuccessfulCopy)
-//                .onChange(of: showToastSuccessfulCopy) { _ in
-//                    if showToastSuccessfulCopy{
-//                        DispatchQueue.main.asyncAfter(deadline: .now() + 2){
-//                            showToastSuccessfulCopy = false
-//                        }
-//                    }
-//                }
+            //            CustomToastSuccessfullySendReport(language: language, theme: theme)
+            //                .offset(y: showToastSuccessfulSendReport ? 10 : -UIScreen.main.bounds.height * 2)
+            //                .opacity(showToastSuccessfulSendReport ? 1 : 0)
+            //                .animation(.easeInOut(duration: 0.8), value: showToastSuccessfulSendReport)
+            //                .onChange(of: showToastSuccessfulSendReport) { _ in
+            //                    if showToastSuccessfulSendReport{
+            //                        DispatchQueue.main.asyncAfter(deadline: .now() + 2){
+            //                            showToastSuccessfulSendReport = false
+            //                        }
+            //                    }
+            //                }
+            //
+            //            CustomToastSuccessfullyCopied(language: language, theme: theme)
+            //                .offset(y: showToastSuccessfulCopy ? 10 : -UIScreen.main.bounds.height * 2)
+            //                .opacity(showToastSuccessfulCopy ? 1 : 0)
+            //                .animation(.easeInOut(duration: 0.8), value: showToastSuccessfulCopy)
+            //                .onChange(of: showToastSuccessfulCopy) { _ in
+            //                    if showToastSuccessfulCopy{
+            //                        DispatchQueue.main.asyncAfter(deadline: .now() + 2){
+            //                            showToastSuccessfulCopy = false
+            //                        }
+            //                    }
+            //                }
         }
     }
     
