@@ -39,6 +39,7 @@ struct FeedbackModifier: ViewModifier {
                         theme: theme,
                         urlServer: urlServer
                     )
+                    .modifier(ViewModifierFeedbackSheetSendMessagePresentationDetents())
                 }
                 .actionSheet(isPresented: $isPresented) {
                     ActionSheet(title: Text(Localization.text(.titleSheet, language: language)), buttons: [
@@ -66,6 +67,17 @@ struct FeedbackModifier: ViewModifier {
     func openMail() {
         if let url = URL(string: emailSupport), UIApplication.shared.canOpenURL(url){
             UIApplication.shared.open(url, options: [:], completionHandler: nil)
+        }
+    }
+}
+
+struct ViewModifierFeedbackSheetSendMessagePresentationDetents: ViewModifier {
+    func body(content: Content) -> some View {
+        if #available(iOS 16.0, *) {
+            content
+                .presentationDetents([.medium])
+        } else {
+            content
         }
     }
 }
@@ -114,7 +126,6 @@ struct FeedbackSheetSendMessage: View {
             .navigationBarTitleDisplayMode(.inline)
             .navigationTitle(Text(Localization.text(.feedback, language: language)))
             .toolbar {
-                
                 ToolbarItem(placement: .cancellationAction) {
                     Button("Cancel", systemImage: "xmark") {
                         presentationMode.wrappedValue.dismiss()
