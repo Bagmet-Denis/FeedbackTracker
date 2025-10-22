@@ -131,7 +131,7 @@ struct FeedbackSheetSendMessage: View {
                     .padding()
                 })
                 
-                ButtonHideKeyboard()
+                ButtonHideKeyboard(theme: theme)
             }
             .navigationBarTitleDisplayMode(.inline)
             .navigationTitle(Text(Localization.text(.feedback, language: language)))

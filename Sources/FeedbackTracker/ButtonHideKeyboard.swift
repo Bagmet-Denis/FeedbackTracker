@@ -9,6 +9,7 @@ import SwiftUI
 
 struct ButtonHideKeyboard: View {
     @State private var isKeyboardPresented: Bool = false
+    let theme: ColorTheme
     var body: some View {
         Group {
             if #available(iOS 26.0, *) {
@@ -24,7 +25,7 @@ struct ButtonHideKeyboard: View {
                             .resizable()
                             .aspectRatio(contentMode: .fit)
                             .frame(width: 20, height: 20)
-                            .foregroundStyle(Color.white)
+                            .foregroundColor(theme == .dark ? Color.white : Color.black)
                     }
                     .frame(width: 40, height: 40)
                 }
@@ -44,7 +45,7 @@ struct ButtonHideKeyboard: View {
                             .resizable()
                             .aspectRatio(contentMode: .fit)
                             .frame(width: 20, height: 20)
-                            .foregroundColor(Color.white)
+                            .foregroundColor(theme == .dark ? Color.white : Color.black)
                     }
                     .contentShape(.rect)
                     .overlay(Circle().stroke(.ultraThinMaterial, lineWidth: 1))
@@ -65,7 +66,7 @@ struct ButtonHideKeyboard: View {
                             .resizable()
                             .aspectRatio(contentMode: .fit)
                             .frame(width: 20, height: 20)
-                            .foregroundColor(Color.white)
+                            .foregroundColor(theme == .dark ? Color.white : Color.black)
                     }
                     .contentShape(.rect)
                     .overlay(Circle().stroke(Color.white.opacity(0.5), lineWidth: 1))
