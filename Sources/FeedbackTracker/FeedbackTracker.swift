@@ -30,38 +30,35 @@ struct FeedbackModifier: ViewModifier {
     @State var showToastSuccessfulSendReport: Bool = false
     
     func body(content: Content) -> some View {
-        ZStack(alignment: Alignment(horizontal: .center, vertical: .top)) {
-            content
-                .sheet(isPresented: $isPresentedSheetSendMessage) {
-                    FeedbackSheetSendMessage(
-                        feedbackRepository: feedbackRepository,
-                        language: language,
-                        theme: theme,
-                        urlServer: urlServer
-                    )
-                    .modifier(ViewModifierFeedbackSheetSendMessagePresentationDetents())
-                }
-                .actionSheet(isPresented: $isPresented) {
-                    ActionSheet(title: Text(Localization.text(.titleSheet, language: language)), buttons: [
-                        .default(Text(Localization.text(.quickFeedback, language: language)), action: {
-                            feedbackRepository.email.removeAll()
-                            feedbackRepository.message.removeAll()
-                            isPresentedSheetSendMessage = true
-                        }),
-                        .default(Text(Localization.text(.sendToEmail, language: language)), action: {
-                            openMail()
-                        }),
-                        .default(Text(Localization.text(.copyEmail, language: language)), action: {
-                            UIPasteboard.general.string = emailSupport
-                            GlobalToastManager.shared.showToast(language: language, theme: theme) {
-                                CustomToastSuccessfullyCopied(language: language, theme: theme)
-                            }
-                        }),
-                        .cancel(Text(Localization.text(.cancel, language: language)))
-                    ])
-                }
-            // Toasts handled via GlobalToastManager
-        }
+        content
+            .sheet(isPresented: $isPresentedSheetSendMessage) {
+                FeedbackSheetSendMessage(
+                    feedbackRepository: feedbackRepository,
+                    language: language,
+                    theme: theme,
+                    urlServer: urlServer
+                )
+                .modifier(ViewModifierFeedbackSheetSendMessagePresentationDetents())
+            }
+            .actionSheet(isPresented: $isPresented) {
+                ActionSheet(title: Text(Localization.text(.titleSheet, language: language)), buttons: [
+                    .default(Text(Localization.text(.quickFeedback, language: language)), action: {
+                        feedbackRepository.email.removeAll()
+                        feedbackRepository.message.removeAll()
+                        isPresentedSheetSendMessage = true
+                    }),
+                    .default(Text(Localization.text(.sendToEmail, language: language)), action: {
+                        openMail()
+                    }),
+                    .default(Text(Localization.text(.copyEmail, language: language)), action: {
+                        UIPasteboard.general.string = emailSupport
+                        GlobalToastManager.shared.showToast(language: language, theme: theme) {
+                            CustomToastSuccessfullyCopied(language: language, theme: theme)
+                        }
+                    }),
+                    .cancel(Text(Localization.text(.cancel, language: language)))
+                ])
+            }
     }
     
     func openMail() {
@@ -92,9 +89,9 @@ struct FeedbackSheetSendMessage: View {
         NavigationView {
             ZStack {
                 if theme == .dark {
-                    Color.black.ignoresSafeArea()
+                    Color(hex: "#121212").ignoresSafeArea()
                 } else {
-                    Color.white.ignoresSafeArea()
+                    Color(hex: "#F0F0F0").ignoresSafeArea()
                 }
                 
                 ScrollView(showsIndicators: false, content: {
